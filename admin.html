@@ -39,38 +39,15 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-<<<<<<< HEAD
-        html, body { height: 100%; color: var(--text); background: linear-gradient(180deg, rgba(4, 10, 24, 0.25) 0%, rgba(4, 10, 24, 0.25) 100%), url('assets/college-wallpaper.png') center/cover fixed no-repeat; background-color: #040a18; }
-=======
-        html, body { height: 100%; color: var(--text); background: linear-gradient(180deg, rgba(4, 10, 24, 0.25) 0%, rgba(4, 10, 24, 0.25) 100%), url('assets/college-wallpaper.png') center/cover fixed no-repeat; }
->>>>>>> 9ee8111 (Initial deployment setup)
-        body {
-            display: flex;
-            min-height: 100vh;
-            overflow: hidden;
-            position: relative;
-        }
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background: rgba(4, 10, 24, 0.42);
-            pointer-events: none;
+                } else {
+                    // No authenticated Firebase user — require explicit sign-in
+                    authOverlay.style.display = 'flex';
+                }
             z-index: -1;
         }
 
-        .sidebar { width: 260px; background: rgba(13,30,61,0.88); color: rgb(255, 255, 255); padding: 20px; flex-shrink: 0; display: flex; flex-direction: column; backdrop-filter: blur(10px); }
-        .sidebar h2 { font-size: 1.2rem; margin-bottom: 30px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 15px; letter-spacing: 1px; }
-        .nav-btn { width: 100%; padding: 12px 15px; margin: 5px 0; background: transparent; border: none; color: rgba(255,255,255,0.9); text-align: left; cursor: pointer; border-radius: 8px; font-size: 14px; transition: 0.3s; display: flex; align-items: center; gap: 10px; }
-        .nav-btn:hover, .nav-btn.active { background: rgba(255,255,255,0.04); color: rgb(228, 233, 87); border-left: 4px solid var(--primary); }
-
-        .main-content { flex-grow: 1; padding: 25px; overflow-y: auto; height: 100vh; background: transparent; color: var(--text); }
-        .section { display: none; background: rgba(4, 10, 24, 0.36); border-radius: 26px; padding: 25px; margin-bottom: 24px; box-shadow: 0 20px 60px rgba(0,0,0,0.18); color: var(--text); backdrop-filter: blur(6px); }
-        .section.active { display: block; animation: fadeIn 0.4s; }
-
-        .card { background: rgba(255, 255, 255, 0.92); padding: 25px; border-radius: 12px; box-shadow: 0 0.15rem 1.75rem 0 var(--card-shadow); margin-bottom: 20px; color: #0f172a; backdrop-filter: blur(4px); }
-        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
-        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+            // Firebase not available; show login overlay and do not auto-authenticate.
+            authOverlay.style.display = 'flex';
         
         label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; margin-bottom: 8px; display: block; }
         input, select, textarea { width: 100%; padding: 12px; border: 1px solid rgba(0,0,0,0.08); border-radius: 6px; font-size: 13px; outline: none; transition: 0.2s; background: transparent; color: #0f172a; }
@@ -418,24 +395,15 @@
         };
 
         const preferredBackendCandidates = [
-<<<<<<< HEAD
             'https://bidwanresidentialcollege.onrender.com',
             'https://bidwanresidential.netlify.app',
-=======
->>>>>>> 9ee8111 (Initial deployment setup)
             window.location.protocol.startsWith('http') && window.location.host ? `${window.location.protocol}//${window.location.host}` : null,
             'http://127.0.0.1:8000',
             'http://localhost:8000',
             'http://localhost:3000'
         ].filter(Boolean);
 
-<<<<<<< HEAD
-        const DEFAULT_BACKEND_URL = 'https://bidwanresidentialcollege.onrender.com';
-        let backendBaseUrl = DEFAULT_BACKEND_URL;
-=======
         let backendBaseUrl = preferredBackendCandidates[0] || 'http://localhost:8000';
->>>>>>> 9ee8111 (Initial deployment setup)
-        const fallbackAdmin = { email: 'admin@bidwan.com', password: 'Admin@123' };
 
         const resolveBackendBaseUrl = async () => {
             for (const candidate of preferredBackendCandidates) {
@@ -1490,22 +1458,7 @@
 
             setAuthMessage('Signing in...', 'success');
             try {
-                if (email === fallbackAdmin.email && password === fallbackAdmin.password) {
-                    currentUser = { email: fallbackAdmin.email, uid: 'fallback-admin' };
-                    setAuthMessage('Fallback admin login successful.', 'success');
-                    setAdminStatus('Fallback admin access granted. You are logged in as local admin.', 'success');
-                    authOverlay.style.display = 'none';
-                    try { localStorage.setItem('adminLoggedIn', '1'); } catch(e) {}
-                    // set upload admin cookie locally and ask server to set cookie for backend domain
-                    try { document.cookie = 'upload_admin=1; Path=/'; } catch(e) {}
-                    try { await fetch(`${backendBaseUrl}/api/set_admin_cookie`, { method: 'POST', credentials: 'include' }); } catch(e) { console.warn('Could not set backend cookie', e); }
-                    loadStoredData();
-                    refreshDashboard();
-                    loadAdminGallery();
-                    ensureHistoryState();
-                    scheduleAutoLogout();
-                    return;
-                }
+                // Removed local fallback admin login for security. Only Firebase auth is allowed.
 
                 if (firebaseSignInWithEmailAndPassword && firebaseAuth) {
                     const userCredential = await firebaseSignInWithEmailAndPassword(firebaseAuth, email, password);
