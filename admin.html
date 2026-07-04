@@ -60,7 +60,7 @@
             color: #111827;
         }
         .card h4 { font-weight: 700; }
-        .card p { opacity: 0.95; }
+        .card p { color: #111827; opacity: 1; }
         .grid-3 { display: grid; gap: 16px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
         .grid-4 { display: grid; gap: 16px; grid-template-columns: repeat(4, minmax(0, 1fr)); }
         label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; margin-bottom: 8px; display: block; }
@@ -132,7 +132,7 @@
                     <button class="secondary-btn" onclick="showSection('registration')">Enrollment</button>
                     <button class="secondary-btn" onclick="showSection('config')">Fee Plan</button>
                 </div>
-                <p style="margin-bottom:10px; color:var(--muted);">Upload photos to appear on the public gallery. Only signed-in admins can upload.</p>
+                <p style="margin-bottom:10px; color:#111827;">Upload photos to appear on the public gallery. Only signed-in admins can upload.</p>
                 <input type="file" id="adminGalleryFiles" accept="image/*" multiple style="margin-bottom:10px;">
                 <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px;" id="adminGalleryPreview"></div>
                 <div style="display:flex; gap:10px;"><button class="btn-main" id="adminUploadGalleryBtn">Upload Selected</button><button class="secondary-btn" id="adminRefreshGallery">Refresh Gallery</button></div>
@@ -223,14 +223,14 @@
                 </div>
                 <div class="grid-3" style="margin-top:15px;">
                     <div style="grid-column:1/-1"><label>Per-Year Fee Setup</label>
-                        <p style="margin-top:6px; color:#6b7280; font-size:13px;">Configure each course year separately. Each year has three installment fields below.</p>
+                        <p style="margin-top:6px; color:#111827; font-size:13px;">Configure each course year separately. Each year has three installment fields below.</p>
                     </div>
                 </div>
 
                 <div id="feeBreakdown" class="card" style="margin-top:15px; padding:12px; display:none;">
                     <h4 style="margin-bottom:10px;">Fee Breakdown & Installments</h4>
                     <div id="feeBreakdownContainer"></div>
-                    <p style="font-size:12px; color:#6b7280; margin-top:8px;">Each year can be split into up to 3 installment payments.</p>
+                    <p style="font-size:12px; color:#111827; margin-top:8px;">Each year can be split into up to 3 installment payments.</p>
                 </div>
 
                 <button class="btn-main" onclick="saveFeePlan()">Set Fee Plan</button>
@@ -268,7 +268,7 @@
         <section id="studentProfiles" class="section">
             <div class="card">
                 <h3 style="color:var(--primary);">Student Profiles</h3>
-                <p style="color:var(--muted); margin-bottom:10px;">View and edit student records, upload documents, and print student profiles.</p>
+                <p style="color:#111827; margin-bottom:10px;">View and edit student records, upload documents, and print student profiles.</p>
                 <div id="profilesList" style="display:grid; gap:8px; max-height:280px; overflow:auto; margin-bottom:12px;"></div>
 
                 <div id="profileEditor" style="display:none; margin-top:10px;">
@@ -369,7 +369,7 @@
 
                 <div class="card" style="margin-top:20px; padding:20px;">
                     <h4>Individual Record</h4>
-                    <pre id="recordDetails" style="white-space: pre-wrap; color:#4a5568; background:#f7fafc; padding:15px; border-radius:10px; margin-top:10px;"></pre>
+                    <pre id="recordDetails" style="white-space: pre-wrap; color:#111827; background: rgba(247, 250, 252, 0.9); padding:15px; border-radius:10px; margin-top:10px;"></pre>
                 </div>
             </div>
         </section>
@@ -941,7 +941,7 @@
 
             if (!studentPool.length) {
                 const row = document.createElement('tr');
-                row.innerHTML = '<td colspan="6" style="text-align:center; color:#888;">No student records yet.</td>';
+                row.innerHTML = '<td colspan="6" style="text-align:center; color:#111827;">No student records yet.</td>';
                 tbody.appendChild(row);
                 if (status) status.textContent = 'No student records yet. Enroll a student to populate this section.';
                 return;
