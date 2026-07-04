@@ -486,7 +486,7 @@
             currentUser = null;
             authOverlay.style.display = 'flex';
             try { localStorage.removeItem('adminLoggedIn'); } catch(e) {}
-            setAdminStatus('Signed out. Use fallback admin login if needed.', 'success');
+            setAdminStatus('Signed out. Use Firebase sign-in to access the admin portal.', 'success');
             document.cookie = 'upload_admin=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
             window.location.href = 'admin-login.html';
         };
@@ -503,7 +503,7 @@
                 firebaseOnAuthStateChanged = authModule.onAuthStateChanged;
                 firebaseSignOut = authModule.signOut;
 
-                setAdminStatus('Firebase loaded. You can sign in with Firebase or use fallback admin.', 'success');
+                setAdminStatus('Firebase loaded. Use the Firebase sign-in form to access the admin portal.', 'success');
 
                 if (firebaseOnAuthStateChanged) {
                     firebaseOnAuthStateChanged(firebaseAuth, (user) => {
@@ -520,7 +520,7 @@
                 }
             } catch (error) {
                 console.warn('Firebase modules failed to load', error);
-                setAdminStatus('Firebase is unavailable. Use fallback admin login or connect to the internet.', 'error');
+                setAdminStatus('Firebase is unavailable. Connect to the internet and try again.', 'error');
             }
         };
 
@@ -1505,38 +1505,11 @@
                     ensureHistoryState();
                     scheduleAutoLogout();
                 } else {
-                    // If firebase reports no user, fall back to checking local persistence
-                    const persisted = localStorage.getItem('adminLoggedIn');
-                    if (persisted === '1') {
-                        // Treat as restored fallback admin session
-                        currentUser = { email: fallbackAdmin.email, uid: 'fallback-admin' };
-                        try { document.cookie = 'upload_admin=1; Path=/'; } catch(e) {}
-                        try { fetch(`${backendBaseUrl}/api/set_admin_cookie`, { method: 'POST', credentials: 'include' }).catch(()=>{}); } catch(e) {}
-                        authOverlay.style.display = 'none';
-                        loadStoredData();
-                        refreshDashboard();
-                        loadAdminGallery();
-                        ensureHistoryState();
-                        scheduleAutoLogout();
-                    } else {
-                        authOverlay.style.display = 'flex';
-                    }
+                    authOverlay.style.display = 'flex';
                 }
             });
         } else {
-            // No firebase available: check local persistence to restore session across refresh
-            const persisted = localStorage.getItem('adminLoggedIn');
-            if (persisted === '1') {
-                currentUser = { email: fallbackAdmin.email, uid: 'fallback-admin' };
-                try { document.cookie = 'upload_admin=1; Path=/'; } catch(e) {}
-                try { fetch(`${backendBaseUrl}/api/set_admin_cookie`, { method: 'POST', credentials: 'include' }).catch(()=>{}); } catch(e) {}
-                authOverlay.style.display = 'none';
-                loadStoredData();
-                refreshDashboard();
-                loadAdminGallery();
-                ensureHistoryState();
-                scheduleAutoLogout();
-            }
+            authOverlay.style.display = 'flex';
         }
 
         // Do not automatically sign out on navigation or refresh; session is persisted in localStorage
@@ -1546,25 +1519,11 @@
         updateRegYearPreferenceOptions();
 
         (async function(){
-            const params = new URLSearchParams(window.location.search);
-            if (params.get('autologin') === '1') {
-                console.log('Auto-login requested via URL param');
-                try {
-                    await resolveBackendBaseUrl();
-                } catch(e) { console.warn('resolveBackendBaseUrl failed', e); }
-                currentUser = { email: fallbackAdmin.email, uid: 'fallback-admin' };
-                try { localStorage.setItem('adminLoggedIn','1'); } catch(e) {}
-                try { document.cookie = 'upload_admin=1; Path=/'; } catch(e) {}
-                try { await fetch(`${backendBaseUrl}/api/set_admin_cookie`, { method: 'POST', credentials: 'include' }).catch(()=>{}); } catch(e) { console.warn('set_admin_cookie failed', e); }
-                authOverlay.style.display = 'none';
-                try { await loadStoredData(); } catch(e) { console.warn('loadStoredData failed', e); }
-                try { refreshDashboard(); } catch(e) {}
-                if (typeof loadAdminGallery === 'function') { try { loadAdminGallery(); } catch(e) {} }
-                try { ensureHistoryState(); } catch(e) {}
-                try { scheduleAutoLogout(); } catch(e) {}
-                return;
+            try {
+                await resolveBackendBaseUrl();
+            } catch (e) {
+                console.warn('Backend resolution failed', e);
             }
-            // normal flow
             loadStoredData();
             refreshDashboard();
             window.showSection('dashboard', document.querySelector('.nav-btn'));
