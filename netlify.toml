@@ -11,3 +11,6 @@
   from = "/admin-login.html"
   to = "/admin-login.html"
   status = 200
+
+[context.production.environment]
+  NODE_VERSION = "20"
