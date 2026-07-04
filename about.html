@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | Bidwan Residential College</title>
+    <meta name="description" content="Learn about Bidwan Residential College, our mission, campus life, academic programs, and how we support students with hostel and scholarship facilities.">
+    <meta name="keywords" content="Bidwan Residential College, about us, campus life, academic programs, hostel facilities, scholarships">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            color: #0a3866;
+            line-height: 1.7;
+        }
+        nav {
+            background: #14213d;
+            padding: 14px 24px;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+            margin: 0;
+            padding: 0;
+            justify-content: center;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px 60px;
+        }
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 10px 30px rgba(20, 33, 61, 0.12);
+            margin-bottom: 24px;
+        }
+        h1, h2 {
+            color: #132a4f;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+        .feature {
+            background: #f7f9ff;
+            border: 1px solid #dde7ff;
+            border-radius: 12px;
+            padding: 16px;
+        }
+        .btn-back {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #3652c5;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        @media (max-width: 600px) {
+            .card { padding: 22px; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="courses.html">Courses</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+            <li><a href="course-details.html">Course Details</a></li>
+            <li><a href="addmission.html">Admission</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <a href="index.html" class="btn-back">← Back to Home</a>
+        <div class="card">
+            <h1>About Bidwan Residential College</h1>
+            <p>Bidwan Residential College is a trusted institution committed to academic excellence, discipline, and holistic student development. We offer strong science-focused programs for +2 and +3 levels with a residential environment that supports learning and growth.</p>
+        </div>
+
+        <div class="card">
+            <h2>Why Students Choose Us</h2>
+            <div class="grid">
+                <div class="feature">
+                    <h3>Experienced Faculty</h3>
+                    <p>Qualified teachers guide students with academic support and mentorship.</p>
+                </div>
+                <div class="feature">
+                    <h3>Residential Campus</h3>
+                    <p>Safe hostels and disciplined campus life help students focus on their future.</p>
+                </div>
+                <div class="feature">
+                    <h3>Career Guidance</h3>
+                    <p>We prepare students for board exams, entrance tests, and higher studies.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

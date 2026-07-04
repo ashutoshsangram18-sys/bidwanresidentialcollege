@@ -1,0 +1,96 @@
+/* Shared site styling */
+:root {
+    --bg: #ffffff;
+    --text: #333333;
+    --muted: #666666;
+    --nav-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --hero-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --card-bg: #ffffff;
+    --card-shadow: rgba(0,0,0,0.1);
+    --accent: #667eea;
+    --footer-bg: #2d3748;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #0f1724;
+        --text: #e6eef8;
+        --muted: #c3d0e6;
+        --nav-gradient: linear-gradient(135deg, #2b3250 0%, #2f2540 100%);
+        --hero-gradient: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+        --card-bg: #0b1220;
+        --card-shadow: rgba(0,0,0,0.6);
+        --accent: #8aa1ff;
+        --footer-bg: #0b1220;
+    }
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    min-height: 100%;
+    color: var(--text);
+    background: linear-gradient(180deg, rgba(4, 10, 24, 0.25) 0%, rgba(4, 10, 24, 0.25) 100%),
+      url('assets/uploads/COLLEGE_1783008736744.png') center/cover fixed no-repeat;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    line-height: 1.6;
+}
+
+nav {
+    background: var(--nav-gradient);
+    padding: 1rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.2rem;
+    margin: 0;
+    padding: 0 1rem;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.92);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    padding: 24px;
+}
+
+.btn-back,
+.btn-view,
+.apply-btn,
+.btn-main,
+.secondary-btn {
+    font-family: inherit;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 20px 16px;
+    }
+}

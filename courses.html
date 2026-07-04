@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Details | Bidwan College</title>
+    <meta name="description" content="Explore the academic courses offered at Bidwan Residential College, including +2 Science and +3 Degree streams with hostel and scholarship support.">
+    <meta name="keywords" content="Bidwan College courses, +2 Science, +3 Degree, course details, academic programs, college courses">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .btn-back {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .btn-back:hover {
+            background: #764ba2;
+            transform: translateX(-5px);
+        }
+
+        .course-tabs {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 15px 30px;
+            border: none;
+            background: white;
+            color: #667eea;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .tab-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(102,126,234,0.3);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .card {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .card.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 2rem;
+        }
+
+        .card h3 {
+            color: #764ba2;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .card p {
+            color: #555;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .card ul li {
+            padding: 10px 0;
+            color: #555;
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .card ul li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .apply-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 40px;
+            border-radius: 25px;
+            text-decoration: none;
+            margin-top: 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102,126,234,0.3);
+        }
+
+        .apply-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(102,126,234,0.4);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .card {
+                padding: 25px;
+            }
+
+            .card h2 {
+                font-size: 1.5rem;
+            }
+
+            .tab-btn {
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <a href="index.html" class="btn-back">← Back to Home</a>
+        
+        <div class="course-tabs">
+            <button id="btn-science" class="tab-btn active">+2 Science</button>
+            <button id="btn-degree" class="tab-btn">+3 Degree</button>
+        </div>
+
+        <div id="content-science" class="card active">
+            <h2>+2 Science (Higher Secondary)</h2>
+            <p>A comprehensive 2-year program focusing on CHSE Odisha excellence and entrance preparation.</p>
+            <h3>Subject Combinations:</h3>
+            <p>Physics, Chemistry, Mathematics, Biology, IT, English, MIL.</p>
+            <h3>Our Facilities:</h3>
+            <ul>
+                <li>Integrated JEE/NEET Coaching.</li>
+                <li>State-of-the-art Science Laboratories.</li>
+                <li>Separate Hostels for Boys & Girls.</li>
+                <li>Free Study Materials & Uniforms.</li>
+            </ul>
+            <a href="addmission.html" class="apply-btn">Apply for +2 Admission</a>
+        </div>
+
+        <div id="content-degree" class="card">
+            <h2>+3 Degree (Science & Arts)</h2>
+            <p>Advanced learning under the CBCS Honours system with a focus on career building.</p>
+            <h3>Honours Offered:</h3>
+            <p><strong>Science:</strong> Physics, Chemistry, Botany, Zoology.<br>
+               <strong>Arts:</strong> History, Pol. Science, Odia, Education.</p>
+            <h3>Our Facilities:</h3>
+            <ul>
+                <li>Expert Faculty with PhD backgrounds.</li>
+                <li>Civil Service Foundation Classes.</li>
+                <li>Library with 5000+ Academic Books.</li>
+                <li>Placement Assistance and Seminars.</li>
+            </ul>
+            <a href="addmission.html" class="apply-btn">Apply for +3 Admission</a>
+        </div>
+    </div>
+
+    <script>
+        // Tab switching functionality
+        const btnScience = document.getElementById('btn-science');
+        const btnDegree = document.getElementById('btn-degree');
+        const contentScience = document.getElementById('content-science');
+        const contentDegree = document.getElementById('content-degree');
+
+        btnScience.addEventListener('click', function() {
+            btnScience.classList.add('active');
+            btnDegree.classList.remove('active');
+            contentScience.classList.add('active');
+            contentDegree.classList.remove('active');
+        });
+
+        btnDegree.addEventListener('click', function() {
+            btnDegree.classList.add('active');
+            btnScience.classList.remove('active');
+            contentDegree.classList.add('active');
+            contentScience.classList.remove('active');
+        });
+    </script>
+
+</body>
+</html>

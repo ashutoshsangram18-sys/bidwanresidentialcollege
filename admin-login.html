@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex,nofollow">
+    <title>Admin Login | Bidwan Residential College</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100%;
+            color: #f8fafc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.45);
+            z-index: -1;
+        }
+        .login-card {
+            width: min(420px, 100%);
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.18);
+            border-radius: 24px;
+            padding: 36px 30px;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.25);
+            backdrop-filter: blur(18px);
+        }
+        .login-card h1 {
+            font-size: 2rem;
+            margin-bottom: 14px;
+            text-align: center;
+        }
+        .login-card p {
+            text-align: center;
+            color: rgba(248,250,252,0.8);
+            margin-bottom: 26px;
+            line-height: 1.5;
+        }
+        .login-card label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: rgba(248,250,252,0.75);
+        }
+        .login-card input {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.18);
+            background: rgba(255,255,255,0.1);
+            color: #f8fafc;
+            font-size: 1rem;
+            margin-bottom: 18px;
+            outline: none;
+        }
+        .login-card input:focus {
+            border-color: rgba(99,102,241,0.9);
+            box-shadow: 0 0 0 4px rgba(99,102,241,0.12);
+        }
+        .login-card button {
+            width: 100%;
+            padding: 14px 16px;
+            border: none;
+            border-radius: 12px;
+            background: #4f46e5;
+            color: white;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+        .login-card button:hover {
+            transform: translateY(-2px);
+            background: #4338ca;
+        }
+        .login-card .message {
+            margin-bottom: 18px;
+            padding: 12px 14px;
+            border-radius: 12px;
+            background: rgba(231,74,59,0.14);
+            color: #fee2e2;
+            border: 1px solid rgba(231,74,59,0.25);
+            display: none;
+        }
+        .login-card .hint {
+            text-align: center;
+            margin-top: 16px;
+            color: rgba(248,250,252,0.72);
+            font-size: 0.92rem;
+        }
+        .login-card .hint a {
+            color: #a5b4fc;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <h1>Admin Login</h1>
+        <p>Enter your admin email and password to continue to the Bidwan admin portal.</p>
+        <div id="errorMessage" class="message"></div>
+        <form id="adminLoginForm">
+            <label for="adminEmail">Admin Email</label>
+            <input type="email" id="adminEmail" name="adminEmail" autocomplete="email" placeholder="admin@bidwan.com" required>
+            <label for="adminPassword">Password</label>
+            <input type="password" id="adminPassword" name="adminPassword" autocomplete="current-password" placeholder="Enter password" required>
+            <button type="submit">Continue to Admin Portal</button>
+        </form>
+        <p class="hint">Use the admin credentials provided by the college. <a href="index.html">Back to home</a></p>
+    </div>
+    <script>
+        const adminLoginForm = document.getElementById('adminLoginForm');
+        const errorMessage = document.getElementById('errorMessage');
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyClKhJ1d-y_zMPbFORM0HUp_3lJ770lWvA",
+            authDomain: "bidwan-college.firebaseapp.com",
+            projectId: "bidwan-college",
+            storageBucket: "bidwan-college.firebasestorage.app",
+            messagingSenderId: "134423824654",
+            appId: "1:134423824654:web:181a5d2b4d8587f280af5f"
+        };
+
+        let firebaseAuth = null;
+        let firebaseSignInWithEmailAndPassword = null;
+        let firebaseOnAuthStateChanged = null;
+
+        const loadFirebase = async () => {
+            try {
+                const appModule = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js');
+                const authModule = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js');
+                await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js').catch(() => {});
+
+                const app = appModule.initializeApp(firebaseConfig);
+                firebaseAuth = authModule.getAuth(app);
+                firebaseSignInWithEmailAndPassword = authModule.signInWithEmailAndPassword;
+                firebaseOnAuthStateChanged = authModule.onAuthStateChanged;
+
+                if (firebaseOnAuthStateChanged) {
+                    firebaseOnAuthStateChanged(firebaseAuth, (user) => {
+                        if (user) {
+                            window.location.href = 'admin.html';
+                        }
+                    });
+                }
+            } catch (error) {
+                console.warn('Firebase is unavailable', error);
+            }
+        };
+
+        loadFirebase();
+
+        adminLoginForm.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            errorMessage.style.display = 'none';
+            errorMessage.textContent = '';
+
+            const email = document.getElementById('adminEmail').value.trim();
+            const password = document.getElementById('adminPassword').value;
+
+            if (!email || !password) {
+                errorMessage.textContent = 'Please enter both email and password.';
+                errorMessage.style.display = 'block';
+                return;
+            }
+
+            if (firebaseSignInWithEmailAndPassword && firebaseAuth) {
+                try {
+                    await firebaseSignInWithEmailAndPassword(firebaseAuth, email, password);
+                    window.location.href = 'admin.html';
+                    return;
+                } catch (error) {
+                    const code = error?.code;
+                    let message = 'Unable to sign in. Please check your email and password.';
+                    if (code === 'auth/invalid-email') {
+                        message = 'Please enter a valid email address.';
+                    } else if (code === 'auth/user-not-found' || code === 'auth/wrong-password') {
+                        message = 'Invalid email or password.';
+                    } else if (code === 'auth/operation-not-allowed') {
+                        message = 'Email/password sign-in is not enabled for this Firebase project.';
+                    } else if (code === 'auth/network-request-failed') {
+                        message = 'Network error. Check your connection and try again.';
+                    }
+                    errorMessage.textContent = message;
+                    errorMessage.style.display = 'block';
+                    return;
+                }
+            }
+
+            // Fallback if Firebase is unavailable
+            const fallbackEmail = 'admin@bidwan.com';
+            const fallbackPassword = 'Admin@123';
+            if (email.toLowerCase() === fallbackEmail.toLowerCase() && password === fallbackPassword) {
+                window.location.href = 'admin.html';
+                return;
+            }
+
+            errorMessage.textContent = 'Invalid admin email or password. Please try again.';
+            errorMessage.style.display = 'block';
+        });
+    </script>
+</body>
+</html>

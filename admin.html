@@ -1,0 +1,1585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex,nofollow">
+    <title>BIDWAN ADMIN PORTAL| Unified Admin Cloud</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        :root {
+            --bg: #000000;
+            --text: #f8fafc;
+            --muted: #64748b;
+            --primary: #0f172a;
+            --secondary: #2563eb;
+            --card-bg: rgba(255, 255, 255, 0.98);
+            --card-shadow: rgba(58,59,69,0.12);
+            --success: #1cc88a;
+            --danger: #e74a3b;
+            --warning: #f6c23e;
+            --info: #36b9cc;
+            --sidebar-bg: rgba(13,30,61,0.95);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #0b1220;
+                --text: #f8fafc;
+                --muted: #0850b5;
+                --primary: #0f172a;
+                --secondary: #60a5fa;
+                --card-bg: rgba(255,255,255,0.96);
+                --card-shadow: rgba(0,0,0,0.6);
+                --success: #29d89e;
+                --danger: #ff7b75;
+                --sidebar-bg: #071428;
+            }
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        html, body { height: 100%; color: var(--text); background: linear-gradient(180deg, rgba(4, 10, 24, 0.25) 0%, rgba(4, 10, 24, 0.25) 100%), url('assets/uploads/COLLEGE_1783008736744.png') center/cover fixed no-repeat; }
+        body {
+            display: flex;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: rgba(4, 10, 24, 0.42);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .sidebar { width: 260px; background: rgba(13,30,61,0.88); color: rgb(255, 255, 255); padding: 20px; flex-shrink: 0; display: flex; flex-direction: column; backdrop-filter: blur(10px); }
+        .sidebar h2 { font-size: 1.2rem; margin-bottom: 30px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 15px; letter-spacing: 1px; }
+        .nav-btn { width: 100%; padding: 12px 15px; margin: 5px 0; background: transparent; border: none; color: rgba(255,255,255,0.9); text-align: left; cursor: pointer; border-radius: 8px; font-size: 14px; transition: 0.3s; display: flex; align-items: center; gap: 10px; }
+        .nav-btn:hover, .nav-btn.active { background: rgba(255,255,255,0.04); color: rgb(228, 233, 87); border-left: 4px solid var(--primary); }
+
+        .main-content { flex-grow: 1; padding: 25px; overflow-y: auto; height: 100vh; background: transparent; color: var(--text); }
+        .section { display: none; background: rgba(4, 10, 24, 0.36); border-radius: 26px; padding: 25px; margin-bottom: 24px; box-shadow: 0 20px 60px rgba(0,0,0,0.18); color: var(--text); backdrop-filter: blur(6px); }
+        .section.active { display: block; animation: fadeIn 0.4s; }
+
+        .card { background: rgba(255, 255, 255, 0.92); padding: 25px; border-radius: 12px; box-shadow: 0 0.15rem 1.75rem 0 var(--card-shadow); margin-bottom: 20px; color: #0f172a; backdrop-filter: blur(4px); }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+        
+        label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; margin-bottom: 8px; display: block; }
+        input, select, textarea { width: 100%; padding: 12px; border: 1px solid rgba(0,0,0,0.08); border-radius: 6px; font-size: 13px; outline: none; transition: 0.2s; background: transparent; color: #0f172a; }
+        input::placeholder, textarea::placeholder { color: rgba(15,23,42,0.35); }
+        input:focus, select:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.12); }
+        
+        .sub-title { font-size: 14px; font-weight: 700; color: var(--primary); margin: 25px 0 15px 0; border-bottom: 1px solid rgba(0,0,0,0.06); padding-bottom: 5px; }
+        .section-links { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0 20px; }
+        .secondary-btn { background: rgba(78,115,223,0.06); color: var(--primary); border: 1px solid rgba(78,115,223,0.08); padding: 10px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; }
+        .secondary-btn:hover { background: rgba(78,115,223,0.08); }
+        .btn-main { background: var(--primary); color: white; border: none; padding: 14px; border-radius: 6px; cursor: pointer; font-weight: 600; width: 100%; transition: 0.3s; font-size: 14px; }
+        .btn-main:hover { background: var(--secondary); transform: translateY(-1px); }
+
+        #auth-container { position:fixed; inset:0; background: rgba(0,0,0,0.6); z-index:9999; display:flex; justify-content:center; align-items:center; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th { text-align: left; padding: 12px; background: rgba(78,115,223,0.04); color: var(--muted); font-size: 12px; }
+        td { padding: 12px; border-bottom: 1px solid rgba(0,0,0,0.06); font-size: 14px; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <div id="auth-container">
+        <div style="background:white; padding:45px; border-radius:15px; width:400px; text-align: center;">
+            <h2 style="color:var(--primary); margin-bottom:20px;">BIDWAN ERP</h2>
+            <input type="email" id="loginEmail" placeholder="Admin Email" style="margin-bottom:15px;">
+            <input type="password" id="loginPass" placeholder="Password" style="margin-bottom:20px;">
+            <button class="btn-main" id="btnLogin">Access System</button>
+        </div>
+    </div>
+
+    <nav class="sidebar">
+        <h2>BIDWAN ADMIN</h2>
+        <button class="nav-btn active" data-section="dashboard" onclick="showSection('dashboard', this)">Dashboard</button>
+        <button class="nav-btn" data-section="registration" onclick="showSection('registration', this)">New Enrollment</button>
+        <button class="nav-btn" data-section="config" onclick="showSection('config', this)">Fee Configuration</button>
+        <button class="nav-btn" data-section="payments" onclick="showSection('payments', this)">Fee Collection</button>
+        <button class="nav-btn" data-section="directory" onclick="showSection('directory', this)">Master Records</button>
+        <button class="nav-btn" data-section="studentProfiles" onclick="showSection('studentProfiles', this)">Student Profiles</button>
+        <button class="nav-btn" data-section="studentRecords" onclick="showSection('studentRecords', this)">Student Records</button>
+        <button class="nav-btn" data-section="galleryAdmin" onclick="showSection('galleryAdmin', this)">Gallery</button>
+        <div style="margin-top:auto;"><button class="nav-btn" id="btnLogout" style="color:var(--danger);">Sign Out</button></div>
+    </nav>
+
+    <main class="main-content">
+        <div id="adminStatusMessage" style="padding: 14px 20px; margin-bottom: 20px; border-radius: 12px; display: none; font-weight: 600;"></div>
+        <section id="dashboard" class="section active">
+            <h2 style="margin-bottom:20px;">Administrative Overview</h2>
+            <div class="section-links">
+            <div class="grid-3">
+                <div class="card" style="border-left: 5px solid var(--primary);"><h4>Total Students</h4><p id="statStudents" style="font-size:24px; font-weight:700;">0</p></div>
+                <div class="card" style="border-left: 5px solid var(--success);"><h4>Total Revenue</h4><p id="statRevenue" style="font-size:24px; font-weight:700;">₹0</p></div>
+            </div>
+            <div class="card">
+                <h4 style="margin-bottom:12px; color:var(--primary);">Quick Actions</h4>
+                <div class="grid-3">
+                    <button class="btn-main" onclick="showSection('registration')">Enroll New Student</button>
+                    <button class="btn-main" onclick="showSection('config')">Set Fee Plan</button>
+                    <button class="btn-main" onclick="showSection('payments')">Collect Fee</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="galleryAdmin" class="section">
+            <div class="card">
+                <h3 style="color:var(--primary);">Campus Gallery - Admin Upload</h3>
+                <div class="section-links">
+                    <button class="secondary-btn" onclick="showSection('dashboard')">Dashboard</button>
+                    <button class="secondary-btn" onclick="showSection('registration')">Enrollment</button>
+                    <button class="secondary-btn" onclick="showSection('config')">Fee Plan</button>
+                </div>
+                <p style="margin-bottom:10px; color:var(--muted);">Upload photos to appear on the public gallery. Only signed-in admins can upload.</p>
+                <input type="file" id="adminGalleryFiles" accept="image/*" multiple style="margin-bottom:10px;">
+                <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px;" id="adminGalleryPreview"></div>
+                <div style="display:flex; gap:10px;"><button class="btn-main" id="adminUploadGalleryBtn">Upload Selected</button><button class="secondary-btn" id="adminRefreshGallery">Refresh Gallery</button></div>
+                <div style="margin-top:15px;">
+                    <h4>Existing Gallery</h4>
+                    <div id="adminGalleryGrid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin-top:10px;"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="registration" class="section">
+            <div class="card">
+                <h3 style="color:var(--primary); margin-bottom:20px;">STUDENT ENROLLMENT ENGINE</h3>
+                <div class="section-links">
+                    <button class="secondary-btn" onclick="showSection('dashboard')">Dashboard</button>
+                    <button class="secondary-btn" onclick="showSection('config')">Fee Plan</button>
+                    <button class="secondary-btn" onclick="showSection('payments')">Payments</button>
+                    <button class="secondary-btn" onclick="showSection('directory')">Records</button>
+                </div>
+                
+                <div class="sub-title">1. Admission Context</div>
+                <div class="grid-3">
+                    <div><label>Academic Year</label><select id="regAcademicYear"><option>2025-27</option><option>2026-28</option></select></div>
+                    <div><label>Course Selection</label><select id="regCourse" onchange="updateRegYearPreferenceOptions()"><option value="+2 SCIENCE (CHSE)">+2 SCIENCE (CHSE)</option><option value="+3 SCIENCE (DEGREE)">+3 SCIENCE (DEGREE)</option></select></div>
+                    <div><label>Year Preference</label><select id="regYearPreference"></select></div>
+                </div>
+
+                <div class="sub-title">2. Basic Information</div>
+                <div class="grid-3">
+                    <div><label>Student Full Name</label><input type="text" id="regName"></div>
+                    <div><label>Father's Name</label><input type="text" id="regFather"></div>
+                    <div><label>Mother's Name</label><input type="text" id="regMother"></div>
+                </div>
+
+                <div class="sub-title">3. Contact & Identity</div>
+                <div class="grid-4">
+                    <div><label>Student Phone</label><input type="tel" id="regPhone"></div>
+                    <div><label>Aadhaar Number</label><input type="text" id="regAadhaar"></div>
+                    <div><label>Date of Birth</label><input type="date" id="regDOB"></div>
+                    <div><label>Address</label><textarea id="regAddress" rows="2" style="width:100%; padding:12px; border:1px solid #d1d3e2; border-radius:6px; font-size:13px;"></textarea></div>
+                </div>
+                <div class="grid-3" style="margin-top:15px;">
+                    <div><label>Admission Status</label><input type="text" id="regStatus" placeholder="Active / Pending / Reserved"></div>
+                    <div></div>
+                    <div></div>
+                </div>
+
+                <div class="sub-title">4. Subject Selection</div>
+                <div class="grid-4">
+                    <div><label>Compulsory</label><input type="text" value="Phy, Chem, Eng" readonly></div>
+                    <div><label>Elective 1</label><select id="regE1"><option>Biology</option><option>Math</option><option>IT</option></select></div>
+                    <div><label>Elective 2</label><select id="regE2"><option>Biology</option><option>Math</option><option>IT</option></select></div>
+                    <div><label>Elective 3</label><select id="regE3"><option>Sanskrit</option><option>Odia</option><option>Hindi</option></select></div>
+                </div>
+
+                <div class="sub-title">5. Supporting Documents</div>
+                <div class="grid-4">
+                    <div><label>Birth Certificate</label><input type="file" id="regDocBirth" accept=".pdf,.jpg,.jpeg,.png"></div>
+                    <div><label>Transfer Certificate</label><input type="file" id="regDocTc" accept=".pdf,.jpg,.jpeg,.png"></div>
+                    <div><label>Aadhaar Card</label><input type="file" id="regDocAadhaar" accept=".pdf,.jpg,.jpeg,.png"></div>
+                    <div><label>Passport Photo</label><input type="file" id="regDocPhoto" accept=".pdf,.jpg,.jpeg,.png"></div>
+                </div>
+
+                <div class="sub-title">6. Admission Preferences</div>
+                <div class="grid-3">
+                    <div><label>Preferred Language</label><select id="regLanguage"><option>English</option><option>Hindi</option><option>Odia</option></select></div>
+                    <div><label>Hostel Required</label><select id="regHostel"><option>Yes</option><option>No</option></select></div>
+                    <div><label>Scholarship Status</label><select id="regScholarship"><option>None</option><option>Pending</option><option>Approved</option></select></div>
+                </div>
+
+                <button class="btn-main" style="background:var(--success); margin-top:30px;" onclick="registerStudent()">Finalize Student Entry</button>
+            </div>
+        </section>
+
+        <section id="config" class="section">
+            <div class="card">
+                <h3 style="color:var(--primary);">FEE CONFIGURATION</h3>
+                <div class="section-links">
+                    <button class="secondary-btn" onclick="showSection('dashboard')">Dashboard</button>
+                    <button class="secondary-btn" onclick="showSection('registration')">Enrollment</button>
+                    <button class="secondary-btn" onclick="showSection('payments')">Payments</button>
+                    <button class="secondary-btn" onclick="showSection('directory')">Records</button>
+                </div>
+                <div class="grid-3">
+                    <div><label>Academic Year</label><select id="filterYearConfig" onchange="filterList('config')"><option>2025-27</option><option>2026-28</option></select></div>
+                    <div><label>Course</label><select id="filterCourseConfig" onchange="filterList('config')"><option value="+2 SCIENCE (CHSE)">+2 SCIENCE (CHSE)</option><option value="+3 SCIENCE (DEGREE)">+3 SCIENCE (DEGREE)</option></select></div>
+                    <div><label>Select Student</label><select id="configStudentSelect" onchange="loadCurrentFee()"><option value="">-- Choose Student --</option></select></div>
+                </div>
+                <div class="grid-3" style="margin-top:15px;">
+                    <div style="grid-column:1/-1"><label>Per-Year Fee Setup</label>
+                        <p style="margin-top:6px; color:#6b7280; font-size:13px;">Configure each course year separately. Each year has three installment fields below.</p>
+                    </div>
+                </div>
+
+                <div id="feeBreakdown" class="card" style="margin-top:15px; padding:12px; display:none;">
+                    <h4 style="margin-bottom:10px;">Fee Breakdown & Installments</h4>
+                    <div id="feeBreakdownContainer"></div>
+                    <p style="font-size:12px; color:#6b7280; margin-top:8px;">Each year can be split into up to 3 installment payments.</p>
+                </div>
+
+                <button class="btn-main" onclick="saveFeePlan()">Set Fee Plan</button>
+            </div>
+        </section>
+
+        <section id="payments" class="section">
+            <div class="card">
+                <h3 style="color:var(--primary);">FEE COLLECTION</h3>
+                <div class="section-links">
+                    <button class="secondary-btn" onclick="showSection('dashboard')">Dashboard</button>
+                    <button class="secondary-btn" onclick="showSection('registration')">Enrollment</button>
+                    <button class="secondary-btn" onclick="showSection('config')">Fee Plan</button>
+                    <button class="secondary-btn" onclick="showSection('directory')">Records</button>
+                </div>
+                <div class="grid-4">
+                    <div><label>Academic Year</label><select id="filterYearPay" onchange="filterList('pay')"><option>2024-26</option><option>2025-27</option></select></div>
+                    <div><label>Course</label><select id="filterCoursePay" onchange="updatePayYearOptions(); filterList('pay')"><option value="+2 SCIENCE (CHSE)">+2 SCIENCE (CHSE)</option><option value="+3 SCIENCE (DEGREE)">+3 SCIENCE (DEGREE)</option></select></div>
+                    <div><label>Year Preference</label><select id="filterYearPreferencePay" onchange="filterList('pay')"></select></div>
+                    <div><label>Select Student</label><select id="payStudentSelect"><option value="">-- Choose Student --</option></select></div>
+                </div>
+                <div class="grid-3" style="margin-top:15px;">
+                    <div><label>Amount (₹)</label><input type="number" id="payAmt"></div>
+                    <div><label>Payment Method</label><select id="payMethod"><option value="Cash">Cash</option><option value="Card">Card</option><option value="UPI">UPI</option><option value="Net Banking">Net Banking</option><option value="Cheque">Cheque</option><option value="Other">Other</option></select></div>
+                    <div></div>
+                </div>
+                <div class="grid-3" style="margin-top:15px;">
+                    <div id="payUtrContainer" style="display:none;"><label>UTR Number</label><input type="text" id="payUtr" placeholder="Enter UTR number"></div>
+                    <div></div>
+                    <div><label>Action</label><button class="btn-main" style="background:var(--success);" onclick="processPay()">Submit & Print Invoice</button></div>
+                </div>
+            </div>
+        </section>
+        <!-- Student Profiles: list, edit, upload docs, print -->
+        <section id="studentProfiles" class="section">
+            <div class="card">
+                <h3 style="color:var(--primary);">Student Profiles</h3>
+                <p style="color:var(--muted); margin-bottom:10px;">View and edit student records, upload documents, and print student profiles.</p>
+                <div id="profilesList" style="display:grid; gap:8px; max-height:280px; overflow:auto; margin-bottom:12px;"></div>
+
+                <div id="profileEditor" style="display:none; margin-top:10px;">
+                    <h4 style="margin-bottom:8px;">Edit Student</h4>
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                        <div><label>Name</label><input type="text" id="profileName"></div>
+                        <div><label>Course</label><input type="text" id="profileCourse"></div>
+                        <div><label>Academic Year</label><input type="text" id="profileAcademicYear"></div>
+                        <div><label>Phone</label><input type="tel" id="profilePhone"></div>
+                        <div style="grid-column:1/-1"><label>Address</label><input type="text" id="profileAddress"></div>
+                    </div>
+                    <div style="margin-top:10px; display:flex; gap:10px; align-items:center;">
+                        <div>
+                            <label>Upload Documents</label>
+                            <input type="file" id="profileDocFiles" multiple style="display:block; margin-top:6px;">
+                        </div>
+                        <div style="margin-left:auto; display:flex; gap:8px;">
+                            <button class="btn-main" id="profileSaveBtn">Save</button>
+                            <button class="secondary-btn" id="profileUploadBtn">Upload Docs</button>
+                            <button class="secondary-btn" id="profilePrintBtn">Print Profile</button>
+                        </div>
+                    </div>
+                    <div id="profileDocList" style="margin-top:12px;"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="directory" class="section">
+            <div class="card">
+                <h3>Master Records</h3>
+                <p id="recordsStatus" style="margin:10px 0 0; color:#5a5c69;">No student records yet. Enroll a student to populate this section.</p>
+                <div class="section-links">
+                    <button class="secondary-btn" onclick="showSection('dashboard')">Dashboard</button>
+                    <button class="secondary-btn" onclick="showSection('registration')">Enrollment</button>
+                    <button class="secondary-btn" onclick="showSection('config')">Fee Plan</button>
+                    <button class="secondary-btn" onclick="showSection('payments')">Payments</button>
+                </div>
+                <table id="masterTable">
+                    <thead><tr><th>Name</th><th>Course</th><th>Batch</th><th>Paid</th><th>Subjects</th><th>Docs</th></tr></thead>
+                    <tbody id="masterTableBody"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="studentRecords" class="section">
+            <div class="card">
+                <h3>Student Records Management</h3>
+                <div class="section-links">
+                    <button class="secondary-btn" onclick="showSection('dashboard')">Dashboard</button>
+                    <button class="secondary-btn" onclick="showSection('registration')">Enrollment</button>
+                    <button class="secondary-btn" onclick="showSection('config')">Fee Plan</button>
+                    <button class="secondary-btn" onclick="showSection('payments')">Payments</button>
+                    <button class="secondary-btn" onclick="showSection('directory')">Master Records</button>
+                </div>
+
+                <div class="grid-3">
+                    <div><label>Select Student</label><select id="recordStudentSelect" onchange="loadStudentRecord(this.value)"><option value="">-- Choose Student --</option></select></div>
+                    <div><label>Academic Year</label><input type="text" id="recordAcademicYear"></div>
+                    <div><label>Course</label><input type="text" id="recordCourse"></div>
+                </div>
+                <div class="grid-3" style="margin-top:15px;">
+                    <div><label>Year Preference</label><select id="recordYearPreference"><option value="">-- Select Year --</option><option>1st Year</option><option>2nd Year</option><option>3rd Year</option></select></div>
+                    <div></div>
+                    <div></div>
+                </div>
+
+                <div class="grid-3" style="margin-top:20px;">
+                    <div><label>Student Phone</label><input type="tel" id="recordPhone"></div>
+                    <div><label>Address</label><input type="text" id="recordAddress"></div>
+                    <div><label>Fee Plan</label><input type="number" id="recordFeePlan"></div>
+                </div>
+
+                <div class="grid-3" style="margin-top:20px;">
+                    <div><label>Father's Name</label><input type="text" id="recordFather"></div>
+                    <div><label>Mother's Name</label><input type="text" id="recordMother"></div>
+                    <div><label>Date of Birth</label><input type="date" id="recordDOB"></div>
+                </div>
+
+                <div class="grid-3" style="margin-top:20px;">
+                    <div><label>Status</label><input type="text" id="recordStatus"></div>
+                    <div><label>Hostel</label><select id="recordHostel"><option>No</option><option>Yes</option></select></div>
+                    <div><label>Scholarship</label><select id="recordScholarship"><option>None</option><option>Pending</option><option>Approved</option></select></div>
+                </div>
+
+                <div class="card" style="margin-top:20px; padding:20px;">
+                    <h4>Documents</h4>
+                    <div id="recordDocList" style="display:grid; gap:10px; margin-top:10px;"></div>
+                </div>
+
+                <div class="grid-3" style="margin-top:20px; align-items:end;">
+                    <div><label>Payment Amount</label><input type="number" id="recordPayAmt"></div>
+                    <div>
+                        <button class="btn-main" onclick="saveStudentRecord()">Save Record</button>
+                        <button class="btn-main" style="background:var(--success); margin-top:10px;" onclick="recordProcessPayment()">Add Payment</button>
+                    </div>
+                    <div></div>
+                </div>
+
+                <div class="card" style="margin-top:20px; padding:20px;">
+                    <h4>Individual Record</h4>
+                    <pre id="recordDetails" style="white-space: pre-wrap; color:#4a5568; background:#f7fafc; padding:15px; border-radius:10px; margin-top:10px;"></pre>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <iframe id="printFrame" style="display:none;"></iframe>
+
+    <script>
+        // Apply data-theme attribute based on browser preference and listen for changes
+        (function(){
+            try {
+                const mq = window.matchMedia('(prefers-color-scheme: dark)');
+                function apply(isDark){
+                    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+                }
+                apply(mq.matches);
+                if (mq.addEventListener) {
+                    mq.addEventListener('change', (e) => apply(e.matches));
+                } else if (mq.addListener) {
+                    mq.addListener((e) => apply(e.matches));
+                }
+            } catch (e) {
+                // ignore
+            }
+        })();
+    </script>
+
+    <script type="module">
+        const firebaseConfig = {
+            apiKey: "AIzaSyClKhJ1d-y_zMPbFORM0HUp_3lJ770lWvA",
+            authDomain: "bidwan-college.firebaseapp.com",
+            projectId: "bidwan-college",
+            storageBucket: "bidwan-college.firebasestorage.app",
+            messagingSenderId: "134423824654",
+            appId: "1:134423824654:web:181a5d2b4d8587f280af5f"
+        };
+
+        const preferredBackendCandidates = [
+            window.location.protocol.startsWith('http') && window.location.host ? `${window.location.protocol}//${window.location.host}` : null,
+            'http://127.0.0.1:8000',
+            'http://localhost:8000',
+            'http://localhost:3000'
+        ].filter(Boolean);
+
+        let backendBaseUrl = preferredBackendCandidates[0] || 'http://localhost:8000';
+        const fallbackAdmin = { email: 'admin@bidwan.com', password: 'Admin@123' };
+
+        const resolveBackendBaseUrl = async () => {
+            for (const candidate of preferredBackendCandidates) {
+                try {
+                    const response = await fetch(`${candidate}/health`, { method: 'GET' });
+                    if (response.ok) {
+                        backendBaseUrl = candidate;
+                        return candidate;
+                    }
+                } catch (error) {
+                    // try the next candidate
+                }
+            }
+            return backendBaseUrl;
+        };
+
+        let firebaseAuth = null;
+        let firebaseSignInWithEmailAndPassword = null;
+        let firebaseOnAuthStateChanged = null;
+        let firebaseSignOut = null;
+        let studentPool = [];
+        let currentUser = null;
+        let sessionTimeoutId = null;
+        const SESSION_DURATION_MS = 30 * 60 * 1000;
+        const authOverlay = document.getElementById('auth-container');
+        const authMessage = document.createElement('div');
+        authMessage.id = 'authMessage';
+        authMessage.style.marginTop = '12px';
+        authMessage.style.color = '#e74a3b';
+        authMessage.style.fontSize = '13px';
+        document.querySelector('#auth-container > div').appendChild(authMessage);
+
+        const adminStatusMessage = document.getElementById('adminStatusMessage');
+        const setAdminStatus = (msg = '', type = 'success') => {
+            if (!adminStatusMessage) return;
+            if (!msg) {
+                adminStatusMessage.style.display = 'none';
+                return;
+            }
+            adminStatusMessage.textContent = msg;
+            adminStatusMessage.style.display = 'block';
+            adminStatusMessage.style.backgroundColor = type === 'success' ? 'rgba(28,200,138,0.12)' : 'rgba(231,74,59,0.12)';
+            adminStatusMessage.style.color = type === 'success' ? '#1cc88a' : '#e74a3b';
+            adminStatusMessage.style.border = type === 'success' ? '1px solid rgba(28,200,138,0.3)' : '1px solid rgba(231,74,59,0.3)';
+        };
+
+        const ensureHistoryState = () => {
+            if (window.history && window.history.pushState) {
+                if (!window.history.state || !window.history.state.adminAuth) {
+                    window.history.pushState({ adminAuth: true }, '', window.location.href);
+                }
+            }
+        };
+
+        const scheduleAutoLogout = () => {
+            if (sessionTimeoutId) {
+                clearTimeout(sessionTimeoutId);
+            }
+            sessionTimeoutId = setTimeout(() => {
+                if (firebaseSignOut && firebaseAuth) {
+                    firebaseSignOut(firebaseAuth).catch(() => {});
+                }
+                currentUser = null;
+                authOverlay.style.display = 'flex';
+                try { localStorage.removeItem('adminLoggedIn'); } catch(e) {}
+                document.cookie = 'upload_admin=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
+                setAdminStatus('You were automatically signed out after 30 minutes.', 'success');
+                window.location.href = 'admin-login.html';
+            }, SESSION_DURATION_MS);
+        };
+
+        const signOutAdmin = async () => {
+            if (sessionTimeoutId) {
+                clearTimeout(sessionTimeoutId);
+                sessionTimeoutId = null;
+            }
+            if (firebaseSignOut && firebaseAuth) {
+                await firebaseSignOut(firebaseAuth).catch(() => {});
+            }
+            currentUser = null;
+            authOverlay.style.display = 'flex';
+            try { localStorage.removeItem('adminLoggedIn'); } catch(e) {}
+            setAdminStatus('Signed out. Use fallback admin login if needed.', 'success');
+            document.cookie = 'upload_admin=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
+            window.location.href = 'admin-login.html';
+        };
+
+        const loadFirebaseModules = async () => {
+            try {
+                const appModule = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js");
+                const authModule = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js");
+                await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js").catch(() => {});
+
+                const app = appModule.initializeApp(firebaseConfig);
+                firebaseAuth = authModule.getAuth(app);
+                firebaseSignInWithEmailAndPassword = authModule.signInWithEmailAndPassword;
+                firebaseOnAuthStateChanged = authModule.onAuthStateChanged;
+                firebaseSignOut = authModule.signOut;
+
+                setAdminStatus('Firebase loaded. You can sign in with Firebase or use fallback admin.', 'success');
+
+                if (firebaseOnAuthStateChanged) {
+                    firebaseOnAuthStateChanged(firebaseAuth, (user) => {
+                        currentUser = user;
+                        if (user) {
+                            authOverlay.style.display = 'none';
+                            loadStoredData();
+                            refreshDashboard();
+                            scheduleAutoLogout();
+                        } else {
+                            authOverlay.style.display = 'flex';
+                        }
+                    });
+                }
+            } catch (error) {
+                console.warn('Firebase modules failed to load', error);
+                setAdminStatus('Firebase is unavailable. Use fallback admin login or connect to the internet.', 'error');
+            }
+        };
+
+        loadFirebaseModules();
+
+        const loadStoredData = async () => {
+            await resolveBackendBaseUrl();
+            setAdminStatus('Loading student records from the backend...', 'success');
+            try {
+                const response = await fetch(`${backendBaseUrl}/api/students`);
+                if (!response.ok) {
+                    const message = await response.text();
+                    throw new Error(message || 'Unable to load students');
+                }
+                const data = await response.json();
+                studentPool = Array.isArray(data) ? data : [];
+                refreshDashboard();
+                setAdminStatus(`Loaded ${studentPool.length} student record${studentPool.length === 1 ? '' : 's'}.`, 'success');
+            } catch (error) {
+                console.error('Failed to load students', error);
+                studentPool = [];
+                refreshDashboard();
+                setAdminStatus(`Unable to load students: ${error.message}`, 'error');
+            }
+        };
+
+        const saveStoredData = async (student, isUpdate = false) => {
+            await resolveBackendBaseUrl();
+            if (!student || !student.id) {
+                console.error('No student object provided to saveStoredData');
+                return;
+            }
+
+            const method = isUpdate ? 'PUT' : 'POST';
+            const endpoint = isUpdate ? `${backendBaseUrl}/api/students/${student.id}` : `${backendBaseUrl}/api/students`;
+
+            try {
+                const response = await fetch(endpoint, {
+                    method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(student)
+                });
+                if (!response.ok) {
+                    const message = await response.text();
+                    throw new Error(message || `Failed to ${method} student`);
+                }
+                const saved = await response.json();
+                const existingIndex = studentPool.findIndex(item => String(item.id) === String(saved.id));
+                if (existingIndex === -1) {
+                    studentPool.push(saved);
+                } else {
+                    studentPool[existingIndex] = saved;
+                }
+                setAdminStatus('Student record saved successfully.', 'success');
+                return saved;
+            } catch (error) {
+                console.error('Failed to save student', error);
+                setAdminStatus(`Failed to save student: ${error.message}`, 'error');
+            }
+        };
+
+        const setAuthMessage = (msg, type = 'error') => {
+            authMessage.textContent = msg || '';
+            authMessage.style.color = type === 'success' ? '#1cc88a' : '#e74a3b';
+        };
+
+        const updateStats = () => {
+            const totalStudents = studentPool.length;
+            const paidTotal = studentPool.reduce((sum, student) => sum + Number(student.paid || 0), 0);
+            document.getElementById('statStudents').textContent = totalStudents;
+            document.getElementById('statRevenue').textContent = `₹${paidTotal.toLocaleString()}`;
+        };
+
+        const populateStudentOptions = () => {
+            const selects = [
+                document.getElementById('configStudentSelect'),
+                document.getElementById('payStudentSelect'),
+                document.getElementById('recordStudentSelect')
+            ];
+
+            selects.forEach(select => {
+                if (!select) return;
+                const currentValue = select.value;
+                select.innerHTML = '<option value="">-- Choose Student --</option>';
+                studentPool.forEach(student => {
+                    const option = document.createElement('option');
+                    option.value = student.id;
+                    option.textContent = `${student.name} (${student.course})`;
+                    select.appendChild(option);
+                });
+                if (currentValue) {
+                    select.value = currentValue;
+                }
+            });
+
+            const paySel = document.getElementById('payStudentSelect');
+            if (paySel) {
+                paySel.onchange = () => {
+                    const payUtr = document.getElementById('payUtr');
+                    if (payUtr) payUtr.value = '';
+                };
+            }
+        };
+
+        const updatePayMethodVisibility = () => {
+            const method = document.getElementById('payMethod')?.value;
+            const container = document.getElementById('payUtrContainer');
+            const utrInput = document.getElementById('payUtr');
+            if (!container) return;
+            const show = method === 'UPI' || method === 'Net Banking';
+            container.style.display = show ? 'block' : 'none';
+            if (!show && utrInput) {
+                utrInput.value = '';
+            }
+        };
+
+        document.getElementById('payMethod')?.addEventListener('change', updatePayMethodVisibility);
+        updatePayMethodVisibility();
+
+        const resetPaymentForm = () => {
+            const fields = ['filterYearPay', 'filterCoursePay', 'filterYearPreferencePay', 'payStudentSelect', 'payAmt', 'payMethod', 'payUtr'];
+            fields.forEach(id => {
+                const el = document.getElementById(id);
+                if (!el) return;
+                if (el.tagName === 'SELECT') {
+                    el.selectedIndex = 0;
+                    if (id === 'filterYearPreferencePay') {
+                        updatePayYearOptions();
+                    }
+                } else if (el.tagName === 'INPUT') {
+                    el.value = '';
+                }
+            });
+            updatePayMethodVisibility();
+        };
+
+        // Student Profiles helpers
+        const renderProfilesList = () => {
+            const container = document.getElementById('profilesList');
+            if (!container) return;
+            container.innerHTML = '';
+            studentPool.forEach(student => {
+                const wrap = document.createElement('div');
+                wrap.style.display = 'flex';
+                wrap.style.justifyContent = 'space-between';
+                wrap.style.alignItems = 'center';
+                wrap.style.padding = '8px';
+                wrap.style.border = '1px solid rgba(0,0,0,0.06)';
+                wrap.style.borderRadius = '6px';
+                const left = document.createElement('div');
+                left.innerHTML = `<strong>${student.name || '-'}</strong><div style="font-size:12px;color:var(--muted);">${student.course || ''} • ${student.academicYear || ''}</div>`;
+                const actions = document.createElement('div');
+                actions.style.display = 'flex';
+                actions.style.gap = '8px';
+                const btnView = document.createElement('button'); btnView.className = 'secondary-btn'; btnView.textContent = 'View/Edit';
+                btnView.onclick = () => openStudentProfileEditor(student.id);
+                const btnDocs = document.createElement('button'); btnDocs.className = 'secondary-btn'; btnDocs.textContent = 'Docs';
+                btnDocs.onclick = () => openStudentProfileEditor(student.id);
+                const btnPrint = document.createElement('button'); btnPrint.className = 'secondary-btn'; btnPrint.textContent = 'Print';
+                btnPrint.onclick = () => { openStudentProfileEditor(student.id); setTimeout(() => printStudentProfile(), 200); };
+                actions.appendChild(btnView);
+                actions.appendChild(btnDocs);
+                actions.appendChild(btnPrint);
+                wrap.appendChild(left);
+                wrap.appendChild(actions);
+                container.appendChild(wrap);
+            });
+        };
+
+        const openStudentProfileEditor = (studentId) => {
+            const student = studentPool.find(s => String(s.id) === String(studentId));
+            if (!student) return;
+            document.getElementById('profileEditor').style.display = 'block';
+            document.getElementById('profileName').value = student.name || '';
+            document.getElementById('profileCourse').value = student.course || '';
+            document.getElementById('profileAcademicYear').value = student.academicYear || '';
+            document.getElementById('profilePhone').value = student.phone || '';
+            document.getElementById('profileAddress').value = student.address || '';
+            renderProfileDocs(student);
+            // store current editing id on element
+            document.getElementById('profileSaveBtn').dataset.editing = student.id;
+            document.getElementById('profileUploadBtn').dataset.editing = student.id;
+            document.getElementById('profilePrintBtn').dataset.editing = student.id;
+        };
+
+        const renderProfileDocs = (student) => {
+            const list = document.getElementById('profileDocList');
+            list.innerHTML = '';
+            const docs = Array.isArray(student.documents) ? student.documents : [];
+            if (!docs.length) {
+                list.textContent = 'No documents uploaded.';
+                return;
+            }
+            docs.forEach(d => {
+                const row = document.createElement('div');
+                row.style.display = 'flex';
+                row.style.justifyContent = 'space-between';
+                row.style.padding = '6px 8px';
+                row.style.border = '1px solid rgba(0,0,0,0.04)';
+                row.style.borderRadius = '6px';
+                row.style.marginBottom = '6px';
+                const left = document.createElement('div');
+                left.textContent = d.name + (d.size ? ` (${Math.round(d.size/1024)} KB)` : '');
+                const right = document.createElement('div');
+                right.style.display = 'flex'; right.style.gap = '8px';
+                const btnView = document.createElement('button'); btnView.className = 'secondary-btn'; btnView.textContent = 'View';
+                btnView.onclick = () => { window.open(d.url || ('/assets/uploads/' + d.name), '_blank'); };
+                right.appendChild(btnView);
+                row.appendChild(left); row.appendChild(right);
+                list.appendChild(row);
+            });
+        };
+
+        const saveStudentProfile = async () => {
+            const id = document.getElementById('profileSaveBtn').dataset.editing;
+            if (!id) return alert('No student selected');
+            const student = studentPool.find(s => String(s.id) === String(id));
+            if (!student) return alert('Student not found');
+            student.name = document.getElementById('profileName').value.trim();
+            student.course = document.getElementById('profileCourse').value.trim();
+            student.academicYear = document.getElementById('profileAcademicYear').value.trim();
+            student.phone = document.getElementById('profilePhone').value.trim();
+            student.address = document.getElementById('profileAddress').value.trim();
+            await saveStoredData(student, true);
+            renderProfilesList();
+            alert('Student profile saved.');
+        };
+
+        const uploadProfileDocs = async () => {
+            const id = document.getElementById('profileUploadBtn').dataset.editing;
+            if (!id) return alert('No student selected');
+            const student = studentPool.find(s => String(s.id) === String(id));
+            if (!student) return alert('Student not found');
+            const files = document.getElementById('profileDocFiles').files;
+            if (!files || !files.length) return alert('Choose file(s) to upload');
+            // Try to upload to backend if available
+            await resolveBackendBaseUrl();
+            const form = new FormData();
+            Array.from(files).forEach(f => form.append('file', f, f.name));
+            try {
+                const res = await fetch(`${backendBaseUrl}/api/upload`, { method: 'POST', body: form, credentials: 'include', headers: { 'X-Admin-Portal': '1' } });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Upload failed');
+                const uploaded = data.uploaded || [];
+                uploaded.forEach(u => {
+                    student.documents = student.documents || [];
+                    student.documents.push({ name: u.name, size: 0, url: u.url, thumb: u.thumb });
+                });
+            } catch (err) {
+                // fallback: just add local metadata
+                Array.from(files).forEach(f => {
+                    student.documents = student.documents || [];
+                    student.documents.push({ name: f.name, size: f.size });
+                });
+            }
+            await saveStoredData(student, true);
+            renderProfileDocs(student);
+            document.getElementById('profileDocFiles').value = '';
+            alert('Documents added to student profile.');
+        };
+
+        const printStudentProfile = () => {
+            const id = document.getElementById('profilePrintBtn').dataset.editing || document.getElementById('profileSaveBtn').dataset.editing;
+            if (!id) return alert('No student selected');
+            const student = studentPool.find(s => String(s.id) === String(id));
+            if (!student) return alert('Student not found');
+            const html = `
+                <div style="font-family:Arial,Helvetica,sans-serif; padding:20px;">
+                    <h2>Student Profile</h2>
+                    <p><strong>Name:</strong> ${student.name || ''}</p>
+                    <p><strong>Course:</strong> ${student.course || ''}</p>
+                    <p><strong>Academic Year:</strong> ${student.academicYear || ''}</p>
+                    <p><strong>Phone:</strong> ${student.phone || ''}</p>
+                    <p><strong>Address:</strong> ${student.address || ''}</p>
+                    <p><strong>Fee Plan:</strong> ₹${student.feePlan || 0}</p>
+                    <h3>Documents</h3>
+                    <ul>${(Array.isArray(student.documents) ? student.documents.map(d => `<li>${d.name || ''}</li>`).join('') : '')}</ul>
+                </div>
+            `;
+            const printFrame = document.getElementById('printFrame');
+            printFrame.srcdoc = html;
+            printFrame.onload = () => {
+                printFrame.contentWindow.focus();
+                printFrame.contentWindow.print();
+            };
+        };
+
+        // wire profile buttons
+        document.addEventListener('click', (e) => {
+            if (e.target && e.target.id === 'profileSaveBtn') {
+                e.preventDefault(); saveStudentProfile();
+            }
+            if (e.target && e.target.id === 'profileUploadBtn') {
+                e.preventDefault(); uploadProfileDocs();
+            }
+            if (e.target && e.target.id === 'profilePrintBtn') {
+                e.preventDefault(); printStudentProfile();
+            }
+        });
+
+        const loadStudentRecord = (studentId) => {
+            if (!studentId) {
+                document.getElementById('recordDetails').textContent = '';
+                return;
+            }
+            const student = studentPool.find(item => String(item.id) === String(studentId));
+            if (!student) return;
+
+            document.getElementById('recordAcademicYear').value = student.academicYear || '';
+            document.getElementById('recordCourse').value = student.course || '';
+            document.getElementById('recordPhone').value = student.phone || '';
+            document.getElementById('recordAddress').value = student.address || '';
+            document.getElementById('recordFeePlan').value = student.feePlan || '';
+            document.getElementById('recordFather').value = student.father || '';
+            document.getElementById('recordMother').value = student.mother || '';
+            document.getElementById('recordDOB').value = student.dob || '';
+            document.getElementById('recordStatus').value = student.status || '';
+            document.getElementById('recordYearPreference').value = student.yearPreference || '';
+            document.getElementById('recordHostel').value = student.hostel || 'No';
+            document.getElementById('recordScholarship').value = student.scholarship || 'None';
+
+            const docList = document.getElementById('recordDocList');
+            docList.innerHTML = '';
+            if (Array.isArray(student.documents) && student.documents.length) {
+                student.documents.forEach(doc => {
+                    const item = document.createElement('div');
+                    item.style.padding = '10px';
+                    item.style.border = '1px solid #e2e8f0';
+                    item.style.borderRadius = '8px';
+                    item.style.background = '#f7fafc';
+                    item.textContent = `${doc.name} (${Math.round((doc.size || 0) / 1024)} KB)`;
+                    docList.appendChild(item);
+                });
+            } else {
+                const item = document.createElement('div');
+                item.style.padding = '10px';
+                item.style.color = '#718096';
+                item.textContent = 'No documents uploaded.';
+                docList.appendChild(item);
+            }
+
+            document.getElementById('recordDetails').textContent = `Name: ${student.name || '-'}\nCourse: ${student.course || '-'}\nYear: ${student.academicYear || '-'}\nYear Preference: ${student.yearPreference || '-'}\nStatus: ${student.status || '-'}\nPhone: ${student.phone || '-'}\nAddress: ${student.address || '-'}\nFee Plan: ₹${student.feePlan || 0}\nPaid: ₹${student.paid || 0}\nHostel: ${student.hostel || '-'}\nScholarship: ${student.scholarship || '-'}\nDocuments: ${Array.isArray(student.documents) ? student.documents.length : 0}`;
+        };
+
+        const saveStudentRecord = async () => {
+            const selectedId = document.getElementById('recordStudentSelect').value;
+            if (!selectedId) {
+                alert('Select a student record first.');
+                return;
+            }
+            const student = studentPool.find(item => String(item.id) === String(selectedId));
+            if (!student) return;
+
+            student.academicYear = document.getElementById('recordAcademicYear').value;
+            student.course = document.getElementById('recordCourse').value;
+            student.yearPreference = document.getElementById('recordYearPreference').value;
+            student.phone = document.getElementById('recordPhone').value.trim();
+            student.address = document.getElementById('recordAddress').value.trim();
+            student.feePlan = Number(document.getElementById('recordFeePlan').value) || 0;
+            student.father = document.getElementById('recordFather').value.trim();
+            student.mother = document.getElementById('recordMother').value.trim();
+            student.dob = document.getElementById('recordDOB').value;
+            student.status = document.getElementById('recordStatus').value;
+            student.hostel = document.getElementById('recordHostel').value;
+            student.scholarship = document.getElementById('recordScholarship').value;
+
+            await saveStoredData(student, true);
+            refreshDashboard();
+            loadStudentRecord(selectedId);
+            alert('Student record updated successfully.');
+        };
+
+        const openStudentRecord = (studentId) => {
+            if (!studentId) return;
+            showSection('studentRecords');
+            setActiveNav('studentRecords');
+            populateStudentOptions();
+            const recordSelect = document.getElementById('recordStudentSelect');
+            if (recordSelect) recordSelect.value = studentId;
+            loadStudentRecord(studentId);
+        };
+
+        const recordProcessPayment = async () => {
+            const selectedId = document.getElementById('recordStudentSelect').value;
+            const amount = Number(document.getElementById('recordPayAmt').value);
+            if (!selectedId || !amount) {
+                alert('Select a student and enter a payment amount.');
+                return;
+            }
+            const student = studentPool.find(item => String(item.id) === String(selectedId));
+            if (!student) return;
+
+            student.paid = Number(student.paid || 0) + amount;
+            await saveStoredData(student, true);
+            refreshDashboard();
+            loadStudentRecord(selectedId);
+            alert('Payment recorded successfully.');
+        };
+
+        const renderMasterTable = () => {
+            const tbody = document.getElementById('masterTableBody');
+            const status = document.getElementById('recordsStatus');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            if (!studentPool.length) {
+                const row = document.createElement('tr');
+                row.innerHTML = '<td colspan="6" style="text-align:center; color:#888;">No student records yet.</td>';
+                tbody.appendChild(row);
+                if (status) status.textContent = 'No student records yet. Enroll a student to populate this section.';
+                return;
+            }
+
+            studentPool.forEach(student => {
+                const row = document.createElement('tr');
+                row.style.cursor = 'pointer';
+                row.onclick = () => openStudentRecord(student.id);
+                const subjects = Array.isArray(student.subjects) ? student.subjects.join(', ') : '—';
+                const documentCount = Array.isArray(student.documents) ? student.documents.length : 0;
+                row.innerHTML = `
+                    <td>${student.name || '-'}</td>
+                    <td>${student.course || '-'}</td>
+                    <td>${student.batch || 'N/A'}</td>
+                    <td>₹${Number(student.paid || 0).toLocaleString()}</td>
+                    <td>${subjects}</td>
+                    <td>${documentCount}</td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            if (status) status.textContent = `${studentPool.length} student record${studentPool.length === 1 ? '' : 's'} available.`;
+        };
+
+        const refreshDashboard = () => {
+            updateStats();
+            populateStudentOptions();
+            renderMasterTable();
+            // refresh student profiles list
+            try { renderProfilesList(); } catch(e) {}
+        };
+
+        // Admin gallery upload logic
+        const adminFiles = document.getElementById('adminGalleryFiles');
+        const adminPreview = document.getElementById('adminGalleryPreview');
+        const adminUploadBtn = document.getElementById('adminUploadGalleryBtn');
+        const adminGrid = document.getElementById('adminGalleryGrid');
+        const adminRefreshBtn = document.getElementById('adminRefreshGallery');
+
+        function renderAdminPreview(files){
+            adminPreview.innerHTML = '';
+            Array.from(files).forEach(file => {
+                const url = URL.createObjectURL(file);
+                const el = document.createElement('div');
+                el.style.width = '120px';
+                el.style.height = '80px';
+                el.style.border = '1px solid rgba(0,0,0,0.06)';
+                el.style.borderRadius = '6px';
+                el.style.overflow = 'hidden';
+                el.style.display = 'flex';
+                el.style.alignItems = 'center';
+                el.style.justifyContent = 'center';
+                const img = document.createElement('img');
+                img.src = url;
+                img.style.maxWidth = '100%';
+                img.style.maxHeight = '100%';
+                el.appendChild(img);
+                adminPreview.appendChild(el);
+            });
+        }
+
+        if (adminFiles) adminFiles.addEventListener('change', (e) => renderAdminPreview(e.target.files));
+
+        if (adminUploadBtn) adminUploadBtn.addEventListener('click', async () => {
+            await resolveBackendBaseUrl();
+            const files = adminFiles.files;
+            if (!files || !files.length) return alert('Choose image files first');
+            const form = new FormData();
+            Array.from(files).forEach(f => form.append('file', f, f.name));
+            try {
+                adminUploadBtn.disabled = true;
+                adminUploadBtn.textContent = 'Uploading...';
+                const res = await fetch(`${backendBaseUrl}/api/upload`, { method: 'POST', body: form, credentials: 'include', headers: { 'X-Admin-Portal': '1' } });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Upload failed');
+                alert('Uploaded ' + (data.uploaded || []).length + ' file(s)');
+                adminFiles.value = '';
+                adminPreview.innerHTML = '';
+                loadAdminGallery();
+            } catch (err) {
+                alert('Upload failed: ' + err.message);
+            } finally {
+                adminUploadBtn.disabled = false;
+                adminUploadBtn.textContent = 'Upload Selected';
+            }
+        });
+
+        async function loadAdminGallery(){
+            await resolveBackendBaseUrl();
+            adminGrid.innerHTML = '';
+            try {
+                const res = await fetch(`${backendBaseUrl}/api/gallery`);
+                const files = await res.json();
+                files.forEach(f => {
+                    const wrap = document.createElement('div');
+                    wrap.style.borderRadius = '8px';
+                    wrap.style.overflow = 'hidden';
+                    wrap.style.background = 'var(--card-bg)';
+                    wrap.style.boxShadow = '0 6px 18px var(--card-shadow)';
+                    wrap.style.position = 'relative';
+                    const img = document.createElement('img');
+                    img.src = f.thumb || f.url;
+                    img.alt = f.name;
+                    img.style.width = '100%';
+                    img.style.height = '120px';
+                    img.style.objectFit = 'cover';
+                    img.style.cursor = 'pointer';
+                    img.addEventListener('click', () => openLightbox(f.webp || f.url, f.name));
+                    wrap.appendChild(img);
+                    const del = document.createElement('button');
+                    del.textContent = 'Delete';
+                    del.className = 'secondary-btn';
+                    del.style.position = 'absolute';
+                    del.style.top = '8px';
+                    del.style.right = '8px';
+                    del.style.padding = '6px 8px';
+                    del.style.fontSize = '12px';
+                    del.addEventListener('click', async (e) => {
+                        e.stopPropagation();
+                        if (!confirm('Delete this image?')) return;
+                        try {
+                                        const resp = await fetch(`${backendBaseUrl}/api/upload?name=` + encodeURIComponent(f.name), { method: 'DELETE', credentials: 'include', headers: { 'X-Admin-Portal': '1' } });
+                            const data = await resp.json();
+                            if (!resp.ok) throw new Error(data.error || 'Delete failed');
+                            alert('Deleted');
+                            loadAdminGallery();
+                        } catch (err) {
+                            alert('Delete failed: ' + err.message);
+                        }
+                    });
+                    wrap.appendChild(del);
+                    adminGrid.appendChild(wrap);
+                });
+            } catch (e) {
+                console.error('Failed load gallery', e);
+            }
+        }
+
+        if (adminRefreshBtn) adminRefreshBtn.addEventListener('click', loadAdminGallery);
+        // initial admin gallery load if authenticated
+        // will be called after login by loadStoredData or refreshDashboard
+
+        const setActiveNav = (sectionId) => {
+            document.querySelectorAll('.nav-btn').forEach(button => {
+                button.classList.toggle('active', button.getAttribute('data-section') === sectionId);
+            });
+        };
+
+        const openSectionForStudent = (sectionId, student) => {
+            window.showSection(sectionId);
+            if (!student) return;
+
+            if (sectionId === 'config') {
+                const yearSelect = document.getElementById('filterYearConfig');
+                const courseSelect = document.getElementById('filterCourseConfig');
+                const studentSelect = document.getElementById('configStudentSelect');
+                if (yearSelect) yearSelect.value = student.academicYear || yearSelect.value;
+                if (courseSelect) courseSelect.value = student.course || courseSelect.value;
+                window.filterList('config');
+                if (studentSelect) studentSelect.value = student.id;
+                window.loadCurrentFee();
+            }
+
+            if (sectionId === 'payments') {
+                const yearSelect = document.getElementById('filterYearPay');
+                const courseSelect = document.getElementById('filterCoursePay');
+                const studentSelect = document.getElementById('payStudentSelect');
+                if (yearSelect) yearSelect.value = student.academicYear || yearSelect.value;
+                if (courseSelect) courseSelect.value = student.course || courseSelect.value;
+                window.filterList('pay');
+                if (studentSelect) studentSelect.value = student.id;
+            }
+        };
+
+        window.showSection = (id, btn) => {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            const section = document.getElementById(id);
+            if (section) section.classList.add('active');
+            if (btn) {
+                btn.classList.add('active');
+            } else {
+                setActiveNav(id);
+            }
+            if (id === 'galleryAdmin') {
+                loadAdminGallery();
+            }
+        };
+
+        window.registerStudent = async () => {
+            const getDocumentSummary = () => {
+                const fields = ['regDocBirth', 'regDocTc', 'regDocAadhaar', 'regDocPhoto'];
+                return fields
+                    .map(fieldId => document.getElementById(fieldId).files[0])
+                    .filter(Boolean)
+                    .map(file => ({ name: file.name, size: file.size }));
+            };
+
+            const student = {
+                id: Date.now().toString(),
+                name: document.getElementById('regName').value.trim(),
+                father: document.getElementById('regFather').value.trim(),
+                mother: document.getElementById('regMother').value.trim(),
+                phone: document.getElementById('regPhone').value.trim(),
+                aadhaar: document.getElementById('regAadhaar').value.trim(),
+                dob: document.getElementById('regDOB').value,
+                address: document.getElementById('regAddress').value.trim(),
+                academicYear: document.getElementById('regAcademicYear').value,
+                course: document.getElementById('regCourse').value,
+                    yearPreference: document.getElementById('regYearPreference').value,
+                paid: 0
+            };
+
+            if (!student.name || !student.phone) {
+                alert('Please enter the student name and phone number.');
+                return;
+            }
+
+            try {
+                const savedStudent = await saveStoredData(student, false);
+                if (savedStudent) {
+                    studentPool = studentPool.filter(item => item.id !== student.id);
+                    studentPool.push(savedStudent);
+                }
+                await loadStoredData();
+            } catch (error) {
+                console.error('Enrollment sync failed', error);
+            }
+            refreshDashboard();
+            openSectionForStudent('config', student);
+            alert(`Student enrolled successfully for ${student.course}.`);
+            document.getElementById('regName').value = '';
+            document.getElementById('regFather').value = '';
+            document.getElementById('regMother').value = '';
+            document.getElementById('regPhone').value = '';
+            document.getElementById('regAadhaar').value = '';
+            document.getElementById('regDOB').value = '';
+            document.getElementById('regAddress').value = '';
+            document.getElementById('regDocBirth').value = '';
+            document.getElementById('regDocTc').value = '';
+            document.getElementById('regDocAadhaar').value = '';
+            document.getElementById('regDocPhoto').value = '';
+        };
+
+        window.updatePayYearOptions = () => {
+            const course = document.getElementById('filterCoursePay').value;
+            const prefSelect = document.getElementById('filterYearPreferencePay');
+            if (!prefSelect) return;
+
+            const options = course.includes('+2')
+                ? ['1st Year', '2nd Year']
+                : ['1st Year', '2nd Year', '3rd Year'];
+
+            prefSelect.innerHTML = '<option value="">-- Select Year --</option>' +
+                options.map(year => `<option value="${year}">${year}</option>`).join('');
+            prefSelect.value = '';
+        };
+
+        window.updateRegYearPreferenceOptions = () => {
+            const course = document.getElementById('regCourse').value;
+            const prefSelect = document.getElementById('regYearPreference');
+            if (!prefSelect) return;
+
+            const options = course.includes('+2')
+                ? ['1st Year', '2nd Year']
+                : ['1st Year', '2nd Year', '3rd Year'];
+
+            prefSelect.innerHTML = '<option value="">-- Select Year --</option>' +
+                options.map(year => `<option value="${year}">${year}</option>`).join('');
+            prefSelect.value = options[0] || '';
+        };
+
+        window.filterList = (mode) => {
+            if (mode === 'config') {
+                const year = document.getElementById('filterYearConfig').value;
+                const course = document.getElementById('filterCourseConfig').value;
+                const studentSelect = document.getElementById('configStudentSelect');
+                studentSelect.innerHTML = '<option value="">-- Choose Student --</option>';
+                studentPool
+                    .filter(student => student.academicYear === year && student.course === course)
+                    .forEach(student => {
+                        const option = document.createElement('option');
+                        option.value = student.id;
+                        option.textContent = `${student.name} (${student.course})`;
+                        studentSelect.appendChild(option);
+                    });
+            }
+
+            if (mode === 'pay') {
+                const year = document.getElementById('filterYearPay').value;
+                const course = document.getElementById('filterCoursePay').value;
+                const studentSelect = document.getElementById('payStudentSelect');
+                studentSelect.innerHTML = '<option value="">-- Choose Student --</option>';
+                studentPool
+                    .filter(student => student.academicYear === year && student.course === course)
+                    .forEach(student => {
+                        const option = document.createElement('option');
+                        option.value = student.id;
+                        option.textContent = `${student.name} (${student.course})`;
+                        studentSelect.appendChild(option);
+                    });
+            }
+        };
+
+        window.loadCurrentFee = () => {
+            const selected = document.getElementById('configStudentSelect').value;
+            if (!selected) return;
+            const student = studentPool.find(item => item.id === selected);
+            if (student) {
+                // render fee breakdown UI based on course (per-year, 3 installments each)
+                renderFeeBreakdown(student);
+                document.getElementById('feeBreakdown').style.display = 'block';
+            }
+        };
+
+        const renderFeeBreakdown = (student) => {
+            const container = document.getElementById('feeBreakdownContainer');
+            const breakdownBox = document.getElementById('feeBreakdown');
+            if (!container || !breakdownBox) return;
+            container.innerHTML = '';
+            const course = (student && student.course) || document.getElementById('filterCourseConfig').value;
+            const years = course && String(course).includes('+2') ? ['1st Year', '2nd Year'] : ['1st Year', '2nd Year', '3rd Year'];
+            const existing = student && Array.isArray(student.feeBreakdown) ? student.feeBreakdown : [];
+
+            years.forEach((yr, idx) => {
+                const ex = existing[idx] || {};
+                const total = ex.total || '';
+                const inst = Array.isArray(ex.installments) ? ex.installments : ['','',''];
+                const row = document.createElement('div');
+                row.className = 'card';
+                row.style.marginBottom = '10px';
+                row.innerHTML = `
+                    <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:10px; align-items:end;">
+                        <div><label>${yr} Total (₹)</label><input type="number" class="fee-total" data-year-index="${idx}" value="${total}"></div>
+                        <div><label>Installment 1 (₹)</label><input type="number" class="fee-inst" data-year-index="${idx}" data-inst-index="0" value="${inst[0] || ''}"></div>
+                        <div><label>Installment 2 (₹)</label><input type="number" class="fee-inst" data-year-index="${idx}" data-inst-index="1" value="${inst[1] || ''}"></div>
+                    </div>
+                    <div style="display:grid; grid-template-columns: 1fr; gap:10px; margin-top:8px;"><div><label>Installment 3 (₹)</label><input type="number" class="fee-inst" data-year-index="${idx}" data-inst-index="2" value="${inst[2] || ''}"></div></div>
+                `;
+                container.appendChild(row);
+            });
+
+            // Auto-generate installment values when a year total is entered
+            const attachAutoSplit = () => {
+                const totals = container.querySelectorAll('.fee-total');
+                totals.forEach(t => {
+                    t.oninput = () => {
+                        const idx = Number(t.dataset.yearIndex);
+                        const totalVal = Number(t.value) || 0;
+                        const instInputs = Array.from(container.querySelectorAll(`.fee-inst[data-year-index="${idx}"]`));
+                        if (!instInputs.length) return;
+                        const n = instInputs.length;
+                        // Distribute amounts to two decimals so that sum equals totalVal
+                        const perRaw = totalVal / n;
+                        // Round to nearest cent for each, then distribute any tiny rounding diff across first few installments
+                        const base = Math.round(perRaw * 100) / 100;
+                        let sum = base * n;
+                        let diff = Math.round((totalVal - sum) * 100) / 100; // can be positive or negative in cents
+                        // Convert diff to cents integer for easy distribution
+                        let cents = Math.round(diff * 100);
+                        const sign = cents >= 0 ? 1 : -1;
+                        cents = Math.abs(cents);
+                        instInputs.forEach((inp, i) => {
+                            let addCents = 0;
+                            if (cents > 0) {
+                                addCents = 1; // give one cent to this installment
+                                cents -= 1;
+                            }
+                            const value = base + (addCents * 0.01 * sign);
+                            inp.value = (Math.round(value * 100) / 100) || '';
+                        });
+                    };
+                });
+            };
+
+            attachAutoSplit();
+        };
+
+        window.saveFeePlan = async () => {
+            const selectedId = document.getElementById('configStudentSelect').value;
+            if (!selectedId) {
+                alert('Choose a student first.');
+                return;
+            }
+            const student = studentPool.find(item => item.id === selectedId);
+            if (student) {
+                // Gather fee breakdown inputs and compute aggregate feePlan as sum of per-year totals
+                const container = document.getElementById('feeBreakdownContainer');
+                const breakdown = [];
+                let aggregateTotal = 0;
+                if (container) {
+                    const totals = container.querySelectorAll('.fee-total');
+                    for (const t of totals) {
+                        const idx = Number(t.dataset.yearIndex);
+                        const totalVal = Number(t.value) || 0;
+                        const instInputs = container.querySelectorAll(`.fee-inst[data-year-index="${idx}"]`);
+                        const installments = Array.from(instInputs).map(i => Number(i.value) || 0);
+                        aggregateTotal += totalVal;
+                        // preserve paid amounts if present
+                        const existing = (student.feeBreakdown && student.feeBreakdown[idx]) || {};
+                        const paid = Array.isArray(existing.installmentsPaid) ? existing.installmentsPaid.slice(0,3) : [0,0,0];
+                        breakdown[idx] = { year: idx + 1, total: totalVal, installments, installmentsPaid: paid };
+                    }
+                }
+                student.feeBreakdown = breakdown;
+                student.feePlan = Number(aggregateTotal);
+
+                // Validate installment sums per year
+                const mismatches = [];
+                if (Array.isArray(student.feeBreakdown)) {
+                    student.feeBreakdown.forEach((yr, i) => {
+                        const sumInst = (yr.installments || []).reduce((s, v) => s + Number(v || 0), 0);
+                        const tot = Number(yr.total || 0);
+                        if (sumInst !== tot) {
+                            mismatches.push({ yearIndex: i, total: tot, sumInst });
+                        }
+                    });
+                }
+                if (mismatches.length) {
+                    const ok = confirm('Installment totals do not match per-year total for some years. Save anyway?');
+                    if (!ok) return;
+                }
+
+                // Adjust installmentsPaid if new installment amounts are smaller than previously paid
+                let totalAdjustment = 0;
+                if (Array.isArray(student.feeBreakdown)) {
+                    student.feeBreakdown.forEach((yr, yi) => {
+                        const existing = (studentPool.find(s => s.id === student.id)?.feeBreakdown || [])[yi] || {};
+                        const oldPaidArr = Array.isArray(existing.installmentsPaid) ? existing.installmentsPaid.slice(0,3) : [0,0,0];
+                        const newInst = Array.isArray(yr.installments) ? yr.installments : [0,0,0];
+                        const newPaid = [];
+                        for (let ii = 0; ii < newInst.length; ii++) {
+                            const oldPaid = Number(oldPaidArr[ii] || 0);
+                            const cap = Number(newInst[ii] || 0);
+                            const capped = Math.min(oldPaid, cap);
+                            newPaid[ii] = capped;
+                            totalAdjustment += (oldPaid - capped);
+                        }
+                        yr.installmentsPaid = newPaid;
+                    });
+                }
+
+                if (totalAdjustment > 0) {
+                    student.paid = Math.max(0, Number(student.paid || 0) - totalAdjustment);
+                    alert('Some recorded installment payments exceeded the updated installment amounts and were reduced to fit the new totals. Total paid was adjusted accordingly.');
+                }
+
+                await saveStoredData(student, true);
+                refreshDashboard();
+                openSectionForStudent('payments', student);
+                alert('Fee plan and breakdown saved successfully.');
+            }
+        };
+
+        window.processPay = async () => {
+            const selectedId = document.getElementById('payStudentSelect').value;
+            const amount = Number(document.getElementById('payAmt').value);
+            const payMethod = document.getElementById('payMethod')?.value || 'Unknown';
+            const utrNumber = document.getElementById('payUtr')?.value.trim();
+
+            if (!selectedId || !amount) {
+                alert('Choose a student and enter the payment amount.');
+                return;
+            }
+
+            if ((payMethod === 'UPI' || payMethod === 'Net Banking') && !utrNumber) {
+                alert('Enter the UTR number for UPI or Net Banking payments.');
+                return;
+            }
+
+            const allUtrs = studentPool.reduce((set, studentItem) => {
+                const payments = Array.isArray(studentItem.payments) ? studentItem.payments : [];
+                payments.forEach(pay => {
+                    if (pay.utr) {
+                        set.add(pay.utr);
+                    }
+                });
+                return set;
+            }, new Set());
+
+            if ((payMethod === 'UPI' || payMethod === 'Net Banking') && utrNumber) {
+                if (allUtrs.has(utrNumber)) {
+                    alert('This UTR number has already been used. Please enter a unique UTR number.');
+                    return;
+                }
+            }
+
+            const student = studentPool.find(item => item.id === selectedId);
+            if (!student) return;
+
+            student.payments = student.payments || [];
+            student.payments.push({
+                amount,
+                method: payMethod,
+                utr: utrNumber || '',
+                timestamp: new Date().toISOString(),
+                yearPreference: document.getElementById('filterYearPreferencePay')?.value || ''
+            });
+
+            student.paid = Number(student.paid || 0) + amount;
+            await saveStoredData(student, true);
+            refreshDashboard();
+            const yearPreference = document.getElementById('filterYearPreferencePay')?.value || 'Not selected';
+            const invoice = `Invoice\nStudent: ${student.name}\nYear Preference: ${yearPreference}\nAmount Paid: ₹${amount}\nPayment Method: ${payMethod}\n${utrNumber ? 'UTR: ' + utrNumber + '\n' : ''}Total Paid: ₹${student.paid}`;
+            const printFrame = document.getElementById('printFrame');
+            printFrame.srcdoc = `<pre>${invoice}</pre>`;
+            printFrame.onload = () => {
+                printFrame.contentWindow.focus();
+                printFrame.contentWindow.print();
+            };
+            alert('Payment recorded and invoice prepared.');
+            resetPaymentForm();
+        };
+
+        document.getElementById('btnLogout').addEventListener('click', () => {
+            signOutAdmin();
+        });
+
+        document.getElementById('btnLogin').addEventListener('click', async () => {
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPass').value;
+            if (!email || !password) {
+                setAuthMessage('Enter both email and password to continue.');
+                return;
+            }
+
+            setAuthMessage('Signing in...', 'success');
+            try {
+                if (email === fallbackAdmin.email && password === fallbackAdmin.password) {
+                    currentUser = { email: fallbackAdmin.email, uid: 'fallback-admin' };
+                    setAuthMessage('Fallback admin login successful.', 'success');
+                    setAdminStatus('Fallback admin access granted. You are logged in as local admin.', 'success');
+                    authOverlay.style.display = 'none';
+                    try { localStorage.setItem('adminLoggedIn', '1'); } catch(e) {}
+                    // set upload admin cookie locally and ask server to set cookie for backend domain
+                    try { document.cookie = 'upload_admin=1; Path=/'; } catch(e) {}
+                    try { await fetch(`${backendBaseUrl}/api/set_admin_cookie`, { method: 'POST', credentials: 'include' }); } catch(e) { console.warn('Could not set backend cookie', e); }
+                    loadStoredData();
+                    refreshDashboard();
+                    loadAdminGallery();
+                    ensureHistoryState();
+                    scheduleAutoLogout();
+                    return;
+                }
+
+                if (firebaseSignInWithEmailAndPassword && firebaseAuth) {
+                    const userCredential = await firebaseSignInWithEmailAndPassword(firebaseAuth, email, password);
+                    currentUser = userCredential.user;
+                    setAuthMessage('Firebase login successful.', 'success');
+                    authOverlay.style.display = 'none';
+                    try { localStorage.setItem('adminLoggedIn', '1'); } catch(e) {}
+                    try { document.cookie = 'upload_admin=1; Path=/'; } catch(e) {}
+                    try { await fetch(`${backendBaseUrl}/api/set_admin_cookie`, { method: 'POST', credentials: 'include' }); } catch(e) { console.warn('Could not set backend cookie', e); }
+                    loadStoredData();
+                    refreshDashboard();
+                    loadAdminGallery();
+                    ensureHistoryState();
+                    scheduleAutoLogout();
+                } else {
+                    throw new Error('Firebase auth is not available at this time.');
+                }
+            } catch (error) {
+                console.error('Firebase login failed', error);
+                let friendlyMessage = 'Login failed. Please verify the email/password and that Email/Password sign-in is enabled in Firebase.';
+                if (error?.code === 'auth/invalid-email') {
+                    friendlyMessage = 'Enter a valid email address.';
+                } else if (error?.code === 'auth/user-not-found' || error?.code === 'auth/wrong-password') {
+                    friendlyMessage = 'The email or password is incorrect.';
+                } else if (error?.code === 'auth/operation-not-allowed') {
+                    friendlyMessage = 'Email/password sign-in is not enabled for this Firebase project.';
+                } else if (error?.code === 'auth/network-request-failed') {
+                    friendlyMessage = 'Network error. Check your internet connection.';
+                } else if (error?.message) {
+                    friendlyMessage = error.message;
+                }
+                setAuthMessage(friendlyMessage, 'error');
+            }
+        });
+
+        if (firebaseOnAuthStateChanged && firebaseAuth) {
+            firebaseOnAuthStateChanged(firebaseAuth, (user) => {
+                currentUser = user;
+                if (user) {
+                    authOverlay.style.display = 'none';
+                    loadStoredData();
+                    refreshDashboard();
+                    loadAdminGallery();
+                    ensureHistoryState();
+                    scheduleAutoLogout();
+                } else {
+                    // If firebase reports no user, fall back to checking local persistence
+                    const persisted = localStorage.getItem('adminLoggedIn');
+                    if (persisted === '1') {
+                        // Treat as restored fallback admin session
+                        currentUser = { email: fallbackAdmin.email, uid: 'fallback-admin' };
+                        try { document.cookie = 'upload_admin=1; Path=/'; } catch(e) {}
+                        try { fetch(`${backendBaseUrl}/api/set_admin_cookie`, { method: 'POST', credentials: 'include' }).catch(()=>{}); } catch(e) {}
+                        authOverlay.style.display = 'none';
+                        loadStoredData();
+                        refreshDashboard();
+                        loadAdminGallery();
+                        ensureHistoryState();
+                        scheduleAutoLogout();
+                    } else {
+                        authOverlay.style.display = 'flex';
+                    }
+                }
+            });
+        } else {
+            // No firebase available: check local persistence to restore session across refresh
+            const persisted = localStorage.getItem('adminLoggedIn');
+            if (persisted === '1') {
+                currentUser = { email: fallbackAdmin.email, uid: 'fallback-admin' };
+                try { document.cookie = 'upload_admin=1; Path=/'; } catch(e) {}
+                try { fetch(`${backendBaseUrl}/api/set_admin_cookie`, { method: 'POST', credentials: 'include' }).catch(()=>{}); } catch(e) {}
+                authOverlay.style.display = 'none';
+                loadStoredData();
+                refreshDashboard();
+                loadAdminGallery();
+                ensureHistoryState();
+                scheduleAutoLogout();
+            }
+        }
+
+        // Do not automatically sign out on navigation or refresh; session is persisted in localStorage
+        // and cleared explicitly on sign out or auto-logout. This prevents requiring re-login on page refresh.
+
+        updatePayYearOptions();
+        updateRegYearPreferenceOptions();
+        loadStoredData();
+        refreshDashboard();
+        window.showSection('dashboard', document.querySelector('.nav-btn'));
+    </script>
+</body>
+</html>

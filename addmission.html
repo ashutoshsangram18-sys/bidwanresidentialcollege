@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADMMISSION FORM | BIDWAN RESIDENTIAL COLLEGE</title>
+    <meta name="description" content="Admission application form for Bidwan Residential College. Complete the admission process for +2 Science or +3 Degree programs with hostel support.">
+    <meta name="keywords" content="Bidwan admission, college admission form, +2 Science admission, +3 Degree admission, hostel admission">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .box {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 500px;
+            width: 100%;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .box h2 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        select {
+            cursor: pointer;
+            background: white;
+        }
+
+        .marks-row {
+            display: grid;
+            gap: 15px;
+        }
+
+        .marks-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102,126,234,0.4);
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .box {
+                padding: 25px;
+            }
+
+            .box h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="box" id="admissionSection">
+    <h2>Admission Form</h2>
+    <div id="admissionMessage" style="display:none; margin-bottom:20px; padding:15px; border-radius:10px; background: #e6fffa; color:#065f46; border:1px solid #a7f3d0; font-weight:600;"></div>
+
+    <form id="admissionForm" action="https://formspree.io/f/mnjlpkwl" method="POST">
+        <input type="text" name="name" placeholder="Full Name" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="text" name="phone" placeholder="Phone Number" required>
+
+        <select id="courseSelect" name="course" required>
+            <option value="">Select Course</option>
+            <option value="+2 Science">+2 Science</option>
+            <option value="+3 Degree">+3 Degree</option>
+        </select>
+
+        <div class="marks-row hidden" id="marksRow">
+            <div class="marks-group" id="marks10thGroup">
+                <label for="marks10th">10th Marks</label>
+                <input id="marks10th" type="number" name="marks10th" placeholder="Marks Obtained in 10th" min="0" max="100">
+            </div>
+            <div class="marks-group hidden" id="marks12thGroup">
+                <label for="marks12th">12th Marks</label>
+                <input id="marks12th" type="number" name="marks12th" placeholder="Marks Obtained in 12th" min="0" max="100">
+            </div>
+        </div>
+
+        <textarea name="address" placeholder="Address" required></textarea>
+
+        <button type="submit">Apply Now</button>
+    </form>
+
+    <script>
+        const courseSelect = document.getElementById('courseSelect');
+        const marksRow = document.getElementById('marksRow');
+        const marks10thInput = document.getElementById('marks10th');
+        const marks12thInput = document.getElementById('marks12th');
+        const marks12thGroup = document.getElementById('marks12thGroup');
+
+        function updateMarksFields() {
+            const course = courseSelect.value;
+            if (!course) {
+                marksRow.classList.add('hidden');
+                marks10thInput.required = false;
+                marks12thInput.required = false;
+                marks10thInput.value = '';
+                marks12thInput.value = '';
+                marks12thGroup.classList.add('hidden');
+                return;
+            }
+
+            marksRow.classList.remove('hidden');
+            marks10thInput.required = true;
+
+            if (course === '+3 Degree') {
+                marks12thGroup.classList.remove('hidden');
+                marks12thInput.required = true;
+            } else {
+                marks12thGroup.classList.add('hidden');
+                marks12thInput.required = false;
+                marks12thInput.value = '';
+            }
+        }
+
+        courseSelect.addEventListener('change', updateMarksFields);
+        updateMarksFields();
+    </script>
+    
+
+    <div class="back-link">
+        <a href="index.html">← Back to Home</a>
+    </div>
+</div>
+
+</body>
+</html>
