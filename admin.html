@@ -39,29 +39,29 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-                } else {
-                    // No authenticated Firebase user — require explicit sign-in
-                    authOverlay.style.display = 'flex';
-                }
-            z-index: -1;
-        }
-
-            // Firebase not available; show login overlay and do not auto-authenticate.
-            authOverlay.style.display = 'flex';
-        
+        body { background: var(--bg); color: var(--text); min-height: 100vh; }
+        .sidebar { width: 260px; background: var(--sidebar-bg); color: white; padding: 25px 18px; display: flex; flex-direction: column; gap: 10px; position: fixed; left: 0; top: 0; bottom: 0; z-index: 10; }
+        .sidebar h2 { font-size: 20px; margin-bottom: 18px; color: #fff; }
+        .nav-btn { background: transparent; color: rgba(255,255,255,0.8); border: none; padding: 12px 14px; text-align: left; border-radius: 10px; cursor: pointer; font-size: 13px; font-weight: 600; transition: 0.2s; }
+        .nav-btn:hover, .nav-btn.active { background: rgba(255,255,255,0.12); color: white; }
+        .main-content { margin-left: 260px; padding: 24px; background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%); min-height: 100vh; }
+        .section { display: none; animation: fadeIn 0.25s ease; }
+        .section.active { display: block; }
+        .card { background: var(--card-bg); border-radius: 16px; padding: 18px; box-shadow: 0 12px 30px var(--card-shadow); margin-bottom: 16px; }
+        .grid-3 { display: grid; gap: 16px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .grid-4 { display: grid; gap: 16px; grid-template-columns: repeat(4, minmax(0, 1fr)); }
         label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; margin-bottom: 8px; display: block; }
         input, select, textarea { width: 100%; padding: 12px; border: 1px solid rgba(0,0,0,0.08); border-radius: 6px; font-size: 13px; outline: none; transition: 0.2s; background: transparent; color: #0f172a; }
         input::placeholder, textarea::placeholder { color: rgba(15,23,42,0.35); }
         input:focus, select:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.12); }
-        
         .sub-title { font-size: 14px; font-weight: 700; color: var(--primary); margin: 25px 0 15px 0; border-bottom: 1px solid rgba(0,0,0,0.06); padding-bottom: 5px; }
         .section-links { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0 20px; }
         .secondary-btn { background: rgba(78,115,223,0.06); color: var(--primary); border: 1px solid rgba(78,115,223,0.08); padding: 10px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; }
         .secondary-btn:hover { background: rgba(78,115,223,0.08); }
         .btn-main { background: var(--primary); color: white; border: none; padding: 14px; border-radius: 6px; cursor: pointer; font-weight: 600; width: 100%; transition: 0.3s; font-size: 14px; }
         .btn-main:hover { background: var(--secondary); transform: translateY(-1px); }
-
         #auth-container { position:fixed; inset:0; background: rgba(0,0,0,0.6); z-index:9999; display:flex; justify-content:center; align-items:center; }
+        #auth-container > div { background:white; padding:45px; border-radius:15px; width:400px; text-align:center; box-shadow: 0 20px 60px rgba(0,0,0,0.25); }
         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         th { text-align: left; padding: 12px; background: rgba(78,115,223,0.04); color: var(--muted); font-size: 12px; }
         td { padding: 12px; border-bottom: 1px solid rgba(0,0,0,0.06); font-size: 14px; }
