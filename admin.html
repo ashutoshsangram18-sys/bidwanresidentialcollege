@@ -53,6 +53,10 @@
         .section { display: none; animation: fadeIn 0.25s ease; }
         .section.active { display: block; }
         .card { background: rgba(255, 255, 255, 0.72); border-radius: 16px; padding: 18px; box-shadow: 0 12px 30px var(--card-shadow); margin-bottom: 16px; }
+        .table-wrapper { max-height: calc(100vh - 360px); overflow-y: auto; margin-top: 15px; }
+        #masterTable { width: 100%; border-collapse: collapse; }
+        #masterTable thead th { position: sticky; top: 0; background: rgba(255,255,255,0.96); z-index: 2; }
+        #masterTable tbody tr:hover { background: rgba(15,23,42,0.04); }
         .card h4,
         .card p,
         .card span,
@@ -306,10 +310,12 @@
                     <button class="secondary-btn" onclick="showSection('config')">Fee Plan</button>
                     <button class="secondary-btn" onclick="showSection('payments')">Payments</button>
                 </div>
-                <table id="masterTable">
-                    <thead><tr><th>Name</th><th>Course</th><th>Batch</th><th>Paid</th><th>Subjects</th><th>Docs</th></tr></thead>
-                    <tbody id="masterTableBody"></tbody>
-                </table>
+                <div class="table-wrapper">
+                    <table id="masterTable">
+                        <thead><tr><th>Name</th><th>Course</th><th>Batch</th><th>Paid</th><th>Subjects</th><th>Docs</th></tr></thead>
+                        <tbody id="masterTableBody"></tbody>
+                    </table>
+                </div>
             </div>
         </section>
 
