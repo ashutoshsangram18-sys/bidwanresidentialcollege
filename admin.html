@@ -1458,7 +1458,7 @@
 
             setAuthMessage('Signing in...', 'success');
             try {
-                // Removed local fallback admin login for security. Only Firebase auth is allowed.
+                // Only Firebase auth is allowed for admin access.
 
                 if (firebaseSignInWithEmailAndPassword && firebaseAuth) {
                     const userCredential = await firebaseSignInWithEmailAndPassword(firebaseAuth, email, password);
