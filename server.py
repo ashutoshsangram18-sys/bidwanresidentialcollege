@@ -7,11 +7,21 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parent
-DATA_FILE = ROOT / "server" / "data.json"
+DATA_ROOT = Path(os.environ.get("DATA_ROOT", str(ROOT / "server"))).resolve()
+DATA_FILE = DATA_ROOT / "data.json"
+UPLOAD_ROOT = Path(os.environ.get("UPLOAD_ROOT", str(ROOT / "assets" / "uploads"))).resolve()
+THUMB_ROOT = UPLOAD_ROOT / "thumbs"
 PORT = int(os.environ.get("PORT", "8000"))
 
 
+def ensure_storage_dirs():
+    DATA_ROOT.mkdir(parents=True, exist_ok=True)
+    UPLOAD_ROOT.mkdir(parents=True, exist_ok=True)
+    THUMB_ROOT.mkdir(parents=True, exist_ok=True)
+
+
 def load_students():
+    ensure_storage_dirs()
     if DATA_FILE.exists():
         try:
             return json.loads(DATA_FILE.read_text())
@@ -21,7 +31,7 @@ def load_students():
 
 
 def save_students(students):
-    DATA_FILE.parent.mkdir(parents=True, exist_ok=True)
+    ensure_storage_dirs()
     DATA_FILE.write_text(json.dumps(students, indent=2))
 
 
@@ -66,11 +76,10 @@ class CollegeHandler(BaseHTTPRequestHandler):
             return
 
         if parsed.path == "/api/gallery":
-            uploads_dir = ROOT / 'assets' / 'uploads'
-            uploads_dir.mkdir(parents=True, exist_ok=True)
+            ensure_storage_dirs()
             files = []
             allowed_exts = {'.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp'}
-            for f in sorted(uploads_dir.iterdir()):
+            for f in sorted(UPLOAD_ROOT.iterdir()):
                 # skip non-files, hidden files, and thumbnail/webp entries
                 if not f.is_file():
                     continue
@@ -80,8 +89,8 @@ class CollegeHandler(BaseHTTPRequestHandler):
                     continue
                 if f.suffix.lower() not in allowed_exts:
                     continue
-                thumb = (uploads_dir / 'thumbs' / f.name)
-                webp = uploads_dir / (f.stem + '.webp')
+                thumb = (THUMB_ROOT / f.name)
+                webp = UPLOAD_ROOT / (f.stem + '.webp')
                 files.append({
                     'name': f.name,
                     'url': '/' + str(Path('assets') / 'uploads' / f.name),
@@ -92,6 +101,31 @@ class CollegeHandler(BaseHTTPRequestHandler):
             return
 
         path = parsed.path.lstrip("/") or "index.html"
+        if path.startswith("assets/uploads/"):
+            rel_path = path[len("assets/uploads/"):]
+            target = (UPLOAD_ROOT / rel_path).resolve()
+            if str(target).startswith(str(UPLOAD_ROOT)) and target.exists() and target.is_file():
+                content = target.read_bytes()
+                mime = "image/jpeg" if target.suffix.lower() in {".jpg", ".jpeg"} else "image/png" if target.suffix.lower() == ".png" else "image/webp" if target.suffix.lower() == ".webp" else "application/octet-stream"
+                self.send_response(200)
+                self.send_header("Content-Type", mime)
+                self.send_header("Content-Length", str(len(content)))
+                self.end_headers()
+                self.wfile.write(content)
+                return
+        elif path.startswith("uploads/"):
+            rel_path = path[len("uploads/"):]
+            target = (UPLOAD_ROOT / rel_path).resolve()
+            if str(target).startswith(str(UPLOAD_ROOT)) and target.exists() and target.is_file():
+                content = target.read_bytes()
+                mime = "image/jpeg" if target.suffix.lower() in {".jpg", ".jpeg"} else "image/png" if target.suffix.lower() == ".png" else "image/webp" if target.suffix.lower() == ".webp" else "application/octet-stream"
+                self.send_response(200)
+                self.send_header("Content-Type", mime)
+                self.send_header("Content-Length", str(len(content)))
+                self.end_headers()
+                self.wfile.write(content)
+                return
+
         target = (ROOT / path).resolve()
         if str(target).startswith(str(ROOT)) and target.exists() and target.is_file():
             content = target.read_bytes()
@@ -165,10 +199,9 @@ class CollegeHandler(BaseHTTPRequestHandler):
                 # fallback: treat body as single file when parsing fails
                 fs.append({'filename': None, 'data': body})
             uploads = []
-            upload_dir = ROOT / 'assets' / 'uploads'
-            thumb_dir = upload_dir / 'thumbs'
-            upload_dir.mkdir(parents=True, exist_ok=True)
-            thumb_dir.mkdir(parents=True, exist_ok=True)
+            ensure_storage_dirs()
+            upload_dir = UPLOAD_ROOT
+            thumb_dir = THUMB_ROOT
 
             # Try to import Pillow for resizing; if unavailable, we'll save original files only
             has_pillow = False
@@ -359,18 +392,18 @@ class CollegeHandler(BaseHTTPRequestHandler):
             self._send_json({'error': 'Missing name parameter'}, 400)
             return
 
-        upload_dir = ROOT / 'assets' / 'uploads'
-        target = upload_dir / name
+        ensure_storage_dirs()
+        target = UPLOAD_ROOT / name
         deleted = []
         try:
             if target.exists() and target.is_file():
                 target.unlink()
                 deleted.append(str(target))
-            thumb = upload_dir / 'thumbs' / name
+            thumb = THUMB_ROOT / name
             if thumb.exists() and thumb.is_file():
                 thumb.unlink()
                 deleted.append(str(thumb))
-            webp = upload_dir / (Path(name).stem + '.webp')
+            webp = UPLOAD_ROOT / (Path(name).stem + '.webp')
             if webp.exists() and webp.is_file():
                 webp.unlink()
                 deleted.append(str(webp))

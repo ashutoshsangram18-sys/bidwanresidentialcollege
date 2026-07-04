@@ -5,7 +5,15 @@ services:
     plan: free
     buildCommand: ""
     startCommand: "python3 server.py"
+    autoDeploy: true
+    disk:
+      name: bidwan-data
+      mountPath: /var/data
+      sizeGB: 1
     envVars:
       - key: PORT
         value: "10000"
-    autoDeploy: true
+      - key: DATA_ROOT
+        value: "/var/data"
+      - key: UPLOAD_ROOT
+        value: "/var/data/uploads"
