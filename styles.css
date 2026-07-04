@@ -35,7 +35,7 @@ html, body {
     min-height: 100%;
     color: var(--text);
     background: linear-gradient(180deg, rgba(4, 10, 24, 0.25) 0%, rgba(4, 10, 24, 0.25) 100%),
-        url('/assets/college-wallpaper.png') center/cover fixed no-repeat;
+        url('https://raw.githubusercontent.com/ashutoshsangram18-sys/bidwanresidentialcollege/main/assets/college-wallpaper.png') center/cover fixed no-repeat;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
