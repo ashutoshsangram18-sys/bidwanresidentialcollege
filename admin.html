@@ -39,7 +39,12 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background: var(--bg); color: var(--text); min-height: 100vh; }
+        body {
+            background: linear-gradient(180deg, rgba(4, 10, 24, 0.35) 0%, rgba(4, 10, 24, 0.35) 100%),
+                url('https://raw.githubusercontent.com/ashutoshsangram18-sys/bidwanresidentialcollege/main/assets/college-wallpaper.png') center/cover fixed no-repeat;
+            color: var(--text);
+            min-height: 100vh;
+        }
         .sidebar { width: 260px; background: var(--sidebar-bg); color: white; padding: 25px 18px; display: flex; flex-direction: column; gap: 10px; position: fixed; left: 0; top: 0; bottom: 0; z-index: 10; }
         .sidebar h2 { font-size: 20px; margin-bottom: 18px; color: #fff; }
         .nav-btn { background: transparent; color: rgba(255,255,255,0.8); border: none; padding: 12px 14px; text-align: left; border-radius: 10px; cursor: pointer; font-size: 13px; font-weight: 600; transition: 0.2s; }
