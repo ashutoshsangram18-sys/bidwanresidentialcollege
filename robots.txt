@@ -2,4 +2,8 @@ User-agent: *
 Allow: /
 Disallow: /admin.html
 Disallow: /admin-login.html
+<<<<<<< HEAD
 Sitemap: https://bidwanresidential.netlify.app/sitemap.xml
+=======
+Sitemap: https://your-domain.com/sitemap.xml
+>>>>>>> 9ee8111 (Initial deployment setup)

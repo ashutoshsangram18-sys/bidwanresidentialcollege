@@ -1,0 +1,119 @@
+[
+  {
+    "id": "test123",
+    "name": "Test Student",
+    "course": "+2 Science",
+    "batch": "2024-25",
+    "paid": 240000,
+    "feePlan": 120000,
+    "feeBreakdown": [
+      {
+        "year": 1,
+        "total": 120000,
+        "installments": [
+          40000,
+          40000,
+          40000
+        ],
+        "installmentsPaid": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "year": 2,
+        "total": 120000,
+        "installments": [
+          40000,
+          40000,
+          40000
+        ],
+        "installmentsPaid": [
+          0,
+          0,
+          0
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1782986897478",
+    "name": "Yusuf pathan",
+    "father": "jyfghfufhu",
+    "mother": "iygygyfg",
+    "phone": "1234567890",
+    "aadhaar": "fyuf",
+    "dob": "2004-05-06",
+    "address": "asdfghjkl;'poiuytrewq",
+    "academicYear": "2025-27",
+    "course": "+2 SCIENCE (CHSE)",
+    "status": "",
+    "batch": "2025-27",
+    "subjects": [
+      "Math",
+      "Biology",
+      "Sanskrit"
+    ],
+    "language": "English",
+    "hostel": "Yes",
+    "scholarship": "None",
+    "documents": [
+      {
+        "name": "20260615_181909.jpg",
+        "size": 3410874
+      },
+      {
+        "name": "20260615_181951.jpg",
+        "size": 3860800
+      },
+      {
+        "name": "20260615_182006.jpg",
+        "size": 3865394
+      },
+      {
+        "name": "20260615_182006.jpg",
+        "size": 3865394
+      }
+    ],
+    "paid": 124299442,
+    "feePlan": 120000
+  },
+  {
+    "id": "1782988441008",
+    "name": "qetfwrgwr",
+    "father": "yufgy",
+    "mother": "fgyuf",
+    "phone": "yufg",
+    "aadhaar": "yfyu",
+    "dob": "",
+    "address": "yf",
+    "academicYear": "2025-27",
+    "course": "+3 SCIENCE (DEGREE)",
+    "yearPreference": "1st Year",
+    "paid": 360000
+  },
+  {
+    "id": "1783056514699",
+    "name": "Ashutosh Sangramsingh Nayak",
+    "father": "Nilamadhaba Sangramsingh",
+    "mother": "Pragyan Paramita Nyaka",
+    "phone": "8457862818",
+    "aadhaar": "889537419900",
+    "dob": "2008-11-05",
+    "address": "College Square Jajpur",
+    "academicYear": "2025-27",
+    "course": "+2 SCIENCE (CHSE)",
+    "yearPreference": "1st Year",
+    "paid": 35000,
+    "payments": [
+      {
+        "amount": 15000,
+        "method": "UPI",
+        "utr": "12123456781234567890",
+        "timestamp": "2026-07-03T05:37:48.482Z",
+        "yearPreference": "1st Year"
+      }
+    ]
+  }
+]
