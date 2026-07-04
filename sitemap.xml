@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://your-domain.com/</loc>
+    <loc>https://bidwanresidential.netlify.app/</loc>
     <priority>1.00</priority>
   </url>
   <url>
-    <loc>https://your-domain.com/about.html</loc>
+    <loc>https://bidwanresidential.netlify.app/about.html</loc>
     <priority>0.80</priority>
   </url>
   <url>
-    <loc>https://your-domain.com/courses.html</loc>
+    <loc>https://bidwanresidential.netlify.app/courses.html</loc>
     <priority>0.80</priority>
   </url>
   <url>
-    <loc>https://your-domain.com/course-details.html</loc>
+    <loc>https://bidwanresidential.netlify.app/course-details.html</loc>
     <priority>0.80</priority>
   </url>
   <url>
-    <loc>https://your-domain.com/gallery.html</loc>
+    <loc>https://bidwanresidential.netlify.app/gallery.html</loc>
     <priority>0.70</priority>
   </url>
   <url>
-    <loc>https://your-domain.com/contact.html</loc>
+    <loc>https://bidwanresidential.netlify.app/contact.html</loc>
     <priority>0.70</priority>
   </url>
 </urlset>

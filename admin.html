@@ -39,7 +39,7 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        html, body { height: 100%; color: var(--text); background: linear-gradient(180deg, rgba(4, 10, 24, 0.25) 0%, rgba(4, 10, 24, 0.25) 100%), url('assets/uploads/COLLEGE_1783008736744.png') center/cover fixed no-repeat; }
+        html, body { height: 100%; color: var(--text); background: linear-gradient(180deg, rgba(4, 10, 24, 0.25) 0%, rgba(4, 10, 24, 0.25) 100%), url('assets/college-logo.svg') center/cover fixed no-repeat; background-color: #040a18; }
         body {
             display: flex;
             min-height: 100vh;
@@ -414,13 +414,16 @@
         };
 
         const preferredBackendCandidates = [
+            'https://bidwanresidentialcollege.onrender.com',
+            'https://bidwanresidential.netlify.app',
             window.location.protocol.startsWith('http') && window.location.host ? `${window.location.protocol}//${window.location.host}` : null,
             'http://127.0.0.1:8000',
             'http://localhost:8000',
             'http://localhost:3000'
         ].filter(Boolean);
 
-        let backendBaseUrl = preferredBackendCandidates[0] || 'http://localhost:8000';
+        const DEFAULT_BACKEND_URL = 'https://bidwanresidentialcollege.onrender.com';
+        let backendBaseUrl = DEFAULT_BACKEND_URL;
         const fallbackAdmin = { email: 'admin@bidwan.com', password: 'Admin@123' };
 
         const resolveBackendBaseUrl = async () => {
