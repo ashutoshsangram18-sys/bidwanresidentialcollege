@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import json
+import mimetypes
 import os
 import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -129,7 +130,7 @@ class CollegeHandler(BaseHTTPRequestHandler):
         target = (ROOT / path).resolve()
         if str(target).startswith(str(ROOT)) and target.exists() and target.is_file():
             content = target.read_bytes()
-            mime = "text/html" if target.suffix.lower() in {".html", ".htm"} else "application/octet-stream"
+            mime = mimetypes.guess_type(target.name)[0] or "application/octet-stream"
             self.send_response(200)
             self.send_header("Content-Type", mime)
             self.send_header("Content-Length", str(len(content)))
